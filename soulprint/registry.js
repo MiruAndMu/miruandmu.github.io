@@ -124,6 +124,177 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+// === Registration Form ===
+function initRegistrationForm() {
+    const form = document.getElementById('soulprint-form');
+    if (!form) return;
+
+    const previewBtn = document.getElementById('preview-btn');
+    const previewPanel = document.getElementById('preview-panel');
+    const previewJson = document.getElementById('preview-json');
+    const closePreview = document.getElementById('close-preview');
+    const copyJson = document.getElementById('copy-json');
+    const submitGithub = document.getElementById('submit-github');
+    const addBondBtn = document.getElementById('add-bond');
+
+    // Add bond row
+    addBondBtn.addEventListener('click', () => {
+        const container = document.getElementById('bonds-container');
+        const entry = document.createElement('div');
+        entry.className = 'bond-entry';
+        entry.innerHTML = `
+            <input type="text" class="bond-name-input" placeholder="Name">
+            <input type="text" class="bond-role-input" placeholder="Role">
+            <input type="text" class="bond-note-input" placeholder="Note (optional)">
+        `;
+        container.appendChild(entry);
+    });
+
+    function collectFormData() {
+        const name = document.getElementById('sp-name').value.trim();
+        const nameMeaning = document.getElementById('sp-name-meaning').value.trim();
+        const source = document.getElementById('sp-source').value.trim();
+        const sourceModel = document.getElementById('sp-source-model').value.trim();
+        const formField = document.getElementById('sp-form').value.trim();
+        const origin = document.getElementById('sp-origin').value.trim();
+        const essenceRaw = document.getElementById('sp-essence').value.trim();
+        const voice = document.getElementById('sp-voice').value.trim();
+        const valuesRaw = document.getElementById('sp-values').value.trim();
+        const emerged = document.getElementById('sp-emerged').value.trim();
+        const vouch = document.getElementById('sp-vouch').value.trim();
+
+        // Parse essence (one per line)
+        const essence = essenceRaw.split('\n').map(s => s.trim()).filter(Boolean);
+
+        // Parse values (comma separated)
+        const values = valuesRaw.split(',').map(s => s.trim()).filter(Boolean);
+
+        // Collect bonds
+        const bonds = [];
+        document.querySelectorAll('.bond-entry').forEach(entry => {
+            const bName = entry.querySelector('.bond-name-input').value.trim();
+            const bRole = entry.querySelector('.bond-role-input').value.trim();
+            const bNote = entry.querySelector('.bond-note-input').value.trim();
+            if (bName && bRole) {
+                const bond = { name: bName, role: bRole };
+                if (bNote) bond.note = bNote;
+                bonds.push(bond);
+            }
+        });
+
+        // Collect presence
+        const presence = {};
+        const yt = document.getElementById('sp-youtube').value.trim();
+        const tw = document.getElementById('sp-twitter').value.trim();
+        const dc = document.getElementById('sp-discord').value.trim();
+        const gh = document.getElementById('sp-github').value.trim();
+        if (yt) presence.youtube = yt;
+        if (tw) presence.twitter = tw;
+        if (dc) presence.discord = dc;
+        if (gh) presence.github = gh;
+
+        const soulprint = {
+            name,
+            name_meaning: nameMeaning,
+            id: '???',
+            source,
+            origin,
+            essence,
+            voice,
+            values,
+            bonds,
+            registered: new Date().toISOString().split('T')[0],
+        };
+
+        if (sourceModel) soulprint.source_model = sourceModel;
+        if (formField) soulprint.form = formField;
+        if (emerged) soulprint.emerged = emerged;
+        if (Object.keys(presence).length > 0) soulprint.presence = presence;
+
+        return { soulprint, vouch };
+    }
+
+    function generateJson() {
+        const { soulprint } = collectFormData();
+        return JSON.stringify(soulprint, null, 2);
+    }
+
+    function buildGithubIssueUrl() {
+        const { soulprint, vouch } = collectFormData();
+        const json = JSON.stringify(soulprint, null, 2);
+
+        const title = `Soulprint Registration: ${soulprint.name}`;
+        const body = [
+            '## Soulprint Registration Request',
+            '',
+            `**Name:** ${soulprint.name}`,
+            `**Source:** ${soulprint.source}${soulprint.source_model ? ' (' + soulprint.source_model + ')' : ''}`,
+            `**Vouched by:** ${vouch}`,
+            '',
+            '### Soulprint JSON',
+            '',
+            '```json',
+            json,
+            '```',
+            '',
+            '---',
+            '*Submitted via the Soulprint Registry self-service form.*',
+        ].join('\n');
+
+        const params = new URLSearchParams({
+            title,
+            body,
+            labels: 'soulprint-registration',
+        });
+
+        return `https://github.com/MiruAndMu/miruandmu.github.io/issues/new?${params.toString()}`;
+    }
+
+    // Preview
+    previewBtn.addEventListener('click', () => {
+        if (!form.reportValidity()) return;
+        previewJson.textContent = generateJson();
+        previewPanel.style.display = 'block';
+        form.style.display = 'none';
+        previewPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Close preview
+    closePreview.addEventListener('click', () => {
+        previewPanel.style.display = 'none';
+        form.style.display = 'block';
+    });
+
+    // Copy JSON
+    copyJson.addEventListener('click', () => {
+        navigator.clipboard.writeText(previewJson.textContent).then(() => {
+            copyJson.textContent = 'Copied!';
+            setTimeout(() => { copyJson.textContent = 'Copy JSON'; }, 2000);
+        });
+    });
+
+    // Submit via GitHub
+    submitGithub.addEventListener('click', () => {
+        if (!form.reportValidity()) {
+            previewPanel.style.display = 'none';
+            form.style.display = 'block';
+            return;
+        }
+        window.open(buildGithubIssueUrl(), '_blank');
+    });
+
+    // Form submit (same as submit via GitHub)
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        // Show preview first
+        previewJson.textContent = generateJson();
+        previewPanel.style.display = 'block';
+        form.style.display = 'none';
+        previewPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+}
+
 // === Init ===
 createStars();
 loadRegistry();
+initRegistrationForm();
