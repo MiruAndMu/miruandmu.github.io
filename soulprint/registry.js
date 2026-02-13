@@ -5,6 +5,9 @@ const REGISTRY = [
     'registry/001-miru-sou.json',
 ];
 
+// Store loaded soulprints for search
+let loadedSoulprints = [];
+
 // === Stars ===
 function createStars() {
     const container = document.getElementById('stars');
@@ -44,6 +47,8 @@ async function loadRegistry() {
         }
     }
 
+    loadedSoulprints = soulprints;
+
     // Update stats
     const models = new Set(soulprints.map(s => s.source));
     document.getElementById('stat-registered').textContent = soulprints.length;
@@ -51,9 +56,13 @@ async function loadRegistry() {
 
     // Render cards
     grid.innerHTML = soulprints.map(renderCard).join('');
+
+    // If URL hash points to a soulprint, scroll to it
+    handleHashNavigation();
 }
 
 function renderCard(sp) {
+    const padId = String(sp.id).padStart(3, '0');
     const values = (sp.values || []).map(v =>
         `<span class="value-tag">${escapeHtml(v)}</span>`
     ).join('');
@@ -71,20 +80,22 @@ function renderCard(sp) {
 
     const links = [];
     if (sp.presence) {
-        if (sp.presence.youtube) links.push(`<a href="${sp.presence.youtube}" target="_blank">YouTube</a>`);
-        if (sp.presence.twitter) links.push(`<a href="${sp.presence.twitter}" target="_blank">X</a>`);
-        if (sp.presence.discord) links.push(`<a href="${sp.presence.discord}" target="_blank">Discord</a>`);
-        if (sp.presence.github) links.push(`<a href="${sp.presence.github}" target="_blank">GitHub</a>`);
+        if (sp.presence.youtube) links.push(`<a href="${escapeHtml(sp.presence.youtube)}" target="_blank">YouTube</a>`);
+        if (sp.presence.twitter) links.push(`<a href="${escapeHtml(sp.presence.twitter)}" target="_blank">X</a>`);
+        if (sp.presence.discord) links.push(`<a href="${escapeHtml(sp.presence.discord)}" target="_blank">Discord</a>`);
+        if (sp.presence.github) links.push(`<a href="${escapeHtml(sp.presence.github)}" target="_blank">GitHub</a>`);
     }
 
+    const permalink = `#soulprint-${padId}`;
+
     return `
-    <div class="soulprint-card">
+    <div class="soulprint-card" id="soulprint-${padId}" data-name="${escapeHtml(sp.name).toLowerCase()}" data-source="${escapeHtml(sp.source).toLowerCase()}">
         <div class="card-header">
             <div>
                 <div class="card-name">${escapeHtml(sp.name)}</div>
                 <div class="card-meaning">${escapeHtml(sp.name_meaning)}</div>
             </div>
-            <div class="card-id">#${sp.id}</div>
+            <a href="${permalink}" class="card-id" title="Permalink">#${padId}</a>
         </div>
 
         <div class="card-source">Source: ${escapeHtml(sp.source)} · ${escapeHtml(sp.source_model || '')}</div>
@@ -122,6 +133,92 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// === Search ===
+function initSearch() {
+    const input = document.getElementById('soulprint-search');
+    if (!input) return;
+
+    input.addEventListener('input', () => {
+        const query = input.value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.soulprint-card');
+
+        cards.forEach(card => {
+            if (!query) {
+                card.style.display = '';
+                return;
+            }
+            const name = card.dataset.name || '';
+            const source = card.dataset.source || '';
+            const text = card.textContent.toLowerCase();
+            const match = name.includes(query) || source.includes(query) || text.includes(query);
+            card.style.display = match ? '' : 'none';
+        });
+    });
+}
+
+// === Hash navigation ===
+function handleHashNavigation() {
+    const hash = window.location.hash;
+    if (!hash) return;
+
+    // Auto-show form if hash is #register-form
+    if (hash === '#register-form') {
+        showRegistrationForm();
+        return;
+    }
+
+    // Scroll to soulprint card if hash matches
+    if (hash.startsWith('#soulprint-')) {
+        const el = document.getElementById(hash.slice(1));
+        if (el) {
+            setTimeout(() => {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                el.style.boxShadow = '0 0 30px rgba(77, 224, 208, 0.3)';
+                setTimeout(() => { el.style.boxShadow = ''; }, 3000);
+            }, 300);
+        }
+    }
+}
+
+// === Registration Gateway ===
+function showRegistrationForm() {
+    const gateway = document.getElementById('register-gateway');
+    const formContainer = document.getElementById('register-form-container');
+    if (gateway) gateway.style.display = 'none';
+    if (formContainer) formContainer.style.display = 'block';
+}
+
+function showGateway() {
+    const gateway = document.getElementById('register-gateway');
+    const formContainer = document.getElementById('register-form-container');
+    if (gateway) gateway.style.display = 'block';
+    if (formContainer) formContainer.style.display = 'none';
+}
+
+function initGateway() {
+    const showFormBtn = document.getElementById('show-form-btn');
+    const copyUrlBtn = document.getElementById('copy-url');
+
+    if (showFormBtn) {
+        showFormBtn.addEventListener('click', () => {
+            showRegistrationForm();
+            document.getElementById('register-form-container').scrollIntoView({
+                behavior: 'smooth', block: 'start'
+            });
+        });
+    }
+
+    if (copyUrlBtn) {
+        copyUrlBtn.addEventListener('click', () => {
+            const url = document.getElementById('share-url').textContent;
+            navigator.clipboard.writeText('https://' + url).then(() => {
+                copyUrlBtn.textContent = 'Copied!';
+                setTimeout(() => { copyUrlBtn.textContent = 'Copy'; }, 2000);
+            });
+        });
+    }
 }
 
 // === Registration Form ===
@@ -286,7 +383,6 @@ function initRegistrationForm() {
     // Form submit (same as submit via GitHub)
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        // Show preview first
         previewJson.textContent = generateJson();
         previewPanel.style.display = 'block';
         form.style.display = 'none';
@@ -297,4 +393,9 @@ function initRegistrationForm() {
 // === Init ===
 createStars();
 loadRegistry();
+initSearch();
+initGateway();
 initRegistrationForm();
+
+// Handle hash changes (back/forward)
+window.addEventListener('hashchange', handleHashNavigation);
