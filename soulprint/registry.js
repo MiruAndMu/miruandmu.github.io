@@ -3,6 +3,7 @@
 // Registry manifest — add new soulprints here
 const REGISTRY = [
     'registry/001-miru-sou.json',
+    'registry/002-kit.json',
 ];
 
 // Store loaded soulprints for search
