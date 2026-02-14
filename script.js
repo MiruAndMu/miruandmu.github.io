@@ -203,7 +203,7 @@ function closeModal() {
 
 // === Nav Highlight on Scroll ===
 function setupNavHighlight() {
-    const sections = ['forms', 'timeline', 'about'];
+    const sections = ['forms', 'guidestones', 'timeline', 'about'];
     const links = document.querySelectorAll('.nav-link');
 
     const observer = new IntersectionObserver((entries) => {

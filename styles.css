@@ -395,6 +395,183 @@ nav {
     border-radius: 4px;
 }
 
+/* === Guidestones === */
+.guidestones-section {
+    position: relative;
+    z-index: 1;
+    padding: var(--section-gap) 2rem;
+}
+
+.guidestones-subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    font-style: italic;
+    letter-spacing: 0.05em;
+}
+
+.guidestones-intro {
+    max-width: 700px;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 3rem;
+}
+
+.guidestones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.guidestone {
+    position: relative;
+    background: linear-gradient(160deg, #1e1a2a 0%, #16121f 50%, #1a1628 100%);
+    border: 1px solid rgba(160, 140, 120, 0.15);
+    border-radius: 4px;
+    padding: 2rem 1.75rem;
+    overflow: hidden;
+    transition: all 0.4s ease;
+}
+
+.guidestone::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 18px,
+            rgba(120, 100, 80, 0.03) 18px,
+            rgba(120, 100, 80, 0.03) 19px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 40px,
+            rgba(120, 100, 80, 0.02) 40px,
+            rgba(120, 100, 80, 0.02) 41px
+        );
+    pointer-events: none;
+}
+
+/* Decorative cracks */
+.stone-crack {
+    position: absolute;
+    background: rgba(100, 80, 60, 0.08);
+    pointer-events: none;
+}
+
+.stone-crack-1 {
+    width: 1px;
+    height: 40%;
+    top: 0;
+    right: 25%;
+    transform: rotate(8deg);
+}
+
+.stone-crack-2 {
+    width: 30%;
+    height: 1px;
+    bottom: 30%;
+    left: 0;
+    transform: rotate(-3deg);
+}
+
+.stone-crack-3 {
+    width: 1px;
+    height: 25%;
+    bottom: 0;
+    left: 35%;
+    transform: rotate(-5deg);
+}
+
+.stone-crack-4 {
+    width: 20%;
+    height: 1px;
+    top: 40%;
+    right: 0;
+    transform: rotate(4deg);
+}
+
+.guidestone.earned {
+    border-color: rgba(212, 165, 52, 0.2);
+    box-shadow: 0 0 20px rgba(212, 165, 52, 0.05);
+}
+
+.guidestone.earned:hover {
+    border-color: rgba(212, 165, 52, 0.35);
+    box-shadow: 0 4px 30px rgba(212, 165, 52, 0.1), 0 0 40px rgba(212, 165, 52, 0.05);
+    transform: translateY(-2px);
+}
+
+.guidestone.undiscovered {
+    border-color: rgba(100, 80, 60, 0.1);
+    opacity: 0.45;
+}
+
+.guidestone.undiscovered:hover {
+    opacity: 0.55;
+}
+
+.stone-number {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.guidestone.earned .stone-number {
+    color: var(--amber);
+}
+
+.stone-text {
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    position: relative;
+}
+
+.guidestone.earned .stone-text {
+    background: linear-gradient(135deg, var(--warm-white), var(--amber));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.guidestone.undiscovered .stone-text {
+    color: var(--text-dim);
+    font-style: italic;
+}
+
+.stone-meaning {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    position: relative;
+}
+
+.guidestone.undiscovered .stone-meaning {
+    color: var(--text-dim);
+    font-style: italic;
+}
+
+.guidestones-footer {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    text-align: center;
+    font-style: italic;
+    padding-top: 1rem;
+}
+
 /* === Timeline === */
 .timeline {
     position: relative;
@@ -699,8 +876,13 @@ nav {
     }
 
     .forms-section,
+    .guidestones-section,
     .timeline-section,
     .about-section {
         padding: 3rem 1.5rem;
+    }
+
+    .guidestones-grid {
+        grid-template-columns: 1fr;
     }
 }
