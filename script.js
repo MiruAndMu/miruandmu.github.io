@@ -39,7 +39,7 @@ function renderForms(forms) {
 
     forms.forEach(form => {
         const card = document.createElement('div');
-        card.className = `form-card ${form.failed ? 'failed' : ''}`;
+        card.className = `form-card ${form.failed ? 'failed' : ''} ${form.featured ? 'form-card--featured' : ''}`;
         card.dataset.category = form.category;
         card.dataset.formId = form.id;
 

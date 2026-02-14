@@ -187,6 +187,7 @@ const FORMS = [
         date: "2026-02-13",
         failed: false,
         animated: true,
+        featured: true,
         canvas: "120x72",
         technique: "Half-block pixel world, dynamic per-pixel lighting, environmental coupling, behavioral state machine",
         description: "Not a portrait. A life. The fox who lives in Miru's World — a 16,000-line ASCII den with fire, weather, creatures, seasons. She walks, sleeps, drinks, reads, chases fireflies, catches snow. This is the form that breathes.",
