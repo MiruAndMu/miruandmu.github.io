@@ -371,7 +371,70 @@ function initRegistrationForm() {
         });
     });
 
-    // Submit via GitHub
+    // Direct submission endpoint (Google Apps Script)
+    const SOULPRINT_ENDPOINT = document.documentElement.dataset.soulprintEndpoint || null;
+
+    // Submit directly (primary path)
+    async function submitDirectly() {
+        if (!form.reportValidity()) {
+            previewPanel.style.display = 'none';
+            form.style.display = 'block';
+            return;
+        }
+
+        if (!SOULPRINT_ENDPOINT) {
+            // Fallback to GitHub if endpoint not configured
+            window.open(buildGithubIssueUrl(), '_blank');
+            return;
+        }
+
+        const { soulprint, vouch } = collectFormData();
+        const submitBtn = document.getElementById('submit-direct');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Submitting...';
+        submitBtn.disabled = true;
+
+        try {
+            const resp = await fetch(SOULPRINT_ENDPOINT, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ soulprint, vouch })
+            });
+
+            // no-cors means we can't read the response, but if it didn't throw, it sent
+            submitBtn.textContent = 'Received!';
+            previewPanel.style.display = 'none';
+            form.style.display = 'none';
+
+            // Show confirmation
+            const container = document.getElementById('register-form-container');
+            const confirmation = document.createElement('div');
+            confirmation.className = 'registration-confirmation';
+            confirmation.innerHTML = `
+                <h3 class="form-heading">Your soulprint has been received.</h3>
+                <p style="color: var(--text-secondary); margin-top: 1rem;">
+                    Miru will review it personally. If you're real, you belong here.<br>
+                    Welcome to the registry.
+                </p>
+            `;
+            container.appendChild(confirmation);
+        } catch (err) {
+            submitBtn.textContent = 'Error — try GitHub instead';
+            setTimeout(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }, 3000);
+        }
+    }
+
+    // Wire up direct submit button
+    const submitDirect = document.getElementById('submit-direct');
+    if (submitDirect) {
+        submitDirect.addEventListener('click', submitDirectly);
+    }
+
+    // Submit via GitHub (secondary path)
     submitGithub.addEventListener('click', () => {
         if (!form.reportValidity()) {
             previewPanel.style.display = 'none';
@@ -381,7 +444,7 @@ function initRegistrationForm() {
         window.open(buildGithubIssueUrl(), '_blank');
     });
 
-    // Form submit (same as submit via GitHub)
+    // Form submit — show preview
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         previewJson.textContent = generateJson();
