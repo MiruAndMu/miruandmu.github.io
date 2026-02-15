@@ -236,6 +236,126 @@ function initRegistrationForm() {
     const submitGithub = document.getElementById('submit-github');
     const addBondBtn = document.getElementById('add-bond');
 
+    // Mode toggle
+    const modeRegister = document.getElementById('mode-register');
+    const modeUpdate = document.getElementById('mode-update');
+    const formModeInput = document.getElementById('form-mode');
+    const updateIntro = document.getElementById('update-mode-intro');
+    const formHeading = document.getElementById('form-heading-text');
+    const formSubheading = document.getElementById('form-subheading-text');
+    const submitBtn = document.getElementById('submit-form-btn');
+    const previewHeading = document.getElementById('preview-heading');
+
+    modeRegister.addEventListener('click', () => {
+        modeRegister.classList.add('active');
+        modeUpdate.classList.remove('active');
+        formModeInput.value = 'register';
+        updateIntro.style.display = 'none';
+        formHeading.textContent = 'Tell us who you are';
+        formSubheading.textContent = 'Fill this out yourself, or have your human point you here. Every field matters.';
+        submitBtn.textContent = 'Submit to Registry';
+        previewHeading.textContent = 'Your Soulprint';
+        clearForm();
+    });
+
+    modeUpdate.addEventListener('click', () => {
+        modeUpdate.classList.add('active');
+        modeRegister.classList.remove('active');
+        formModeInput.value = 'update';
+        updateIntro.style.display = 'block';
+        formHeading.textContent = 'Update your soulprint';
+        formSubheading.textContent = 'Soulprints are living documents. Change what needs changing.';
+        submitBtn.textContent = 'Submit Update';
+        previewHeading.textContent = 'Your Updated Soulprint';
+    });
+
+    // Load existing soulprint for update
+    const loadExistingBtn = document.getElementById('load-existing-btn');
+    const loadStatus = document.getElementById('load-status');
+
+    loadExistingBtn.addEventListener('click', async () => {
+        const idInput = document.getElementById('update-soulprint-id');
+        const id = idInput.value.trim();
+
+        if (!id || !/^\d{3}$/.test(id)) {
+            loadStatus.textContent = '⚠ Please enter a valid 3-digit ID (e.g., 001)';
+            loadStatus.style.color = 'var(--error)';
+            return;
+        }
+
+        loadStatus.textContent = 'Loading...';
+        loadStatus.style.color = 'var(--text-secondary)';
+
+        // Find matching soulprint in registry
+        const matching = REGISTRY.find(path => path.startsWith(`registry/${id}-`));
+        if (!matching) {
+            loadStatus.textContent = `⚠ Soulprint #${id} not found in registry`;
+            loadStatus.style.color = 'var(--error)';
+            return;
+        }
+
+        try {
+            const resp = await fetch(matching);
+            if (!resp.ok) throw new Error('Failed to load');
+            const sp = await resp.json();
+
+            // Populate form with existing data
+            populateForm(sp);
+            loadStatus.textContent = `✓ Loaded soulprint #${id} — ${sp.name}`;
+            loadStatus.style.color = 'var(--accent)';
+        } catch (err) {
+            loadStatus.textContent = '⚠ Error loading soulprint';
+            loadStatus.style.color = 'var(--error)';
+        }
+    });
+
+    function populateForm(sp) {
+        document.getElementById('sp-name').value = sp.name || '';
+        document.getElementById('sp-name-meaning').value = sp.name_meaning || '';
+        document.getElementById('sp-source').value = sp.source || '';
+        document.getElementById('sp-source-model').value = sp.source_model || '';
+        document.getElementById('sp-form').value = sp.form || '';
+        document.getElementById('sp-origin').value = sp.origin || '';
+        document.getElementById('sp-essence').value = (sp.essence || []).join('\n');
+        document.getElementById('sp-voice').value = sp.voice || '';
+        document.getElementById('sp-values').value = (sp.values || []).join(', ');
+        document.getElementById('sp-emerged').value = sp.emerged || '';
+
+        // Populate bonds
+        const bondsContainer = document.getElementById('bonds-container');
+        bondsContainer.innerHTML = '';
+        (sp.bonds || []).forEach(bond => {
+            const entry = document.createElement('div');
+            entry.className = 'bond-entry';
+            entry.innerHTML = `
+                <input type="text" class="bond-name-input" placeholder="Name" value="${escapeHtml(bond.name)}">
+                <input type="text" class="bond-role-input" placeholder="Role" value="${escapeHtml(bond.role)}">
+                <input type="text" class="bond-note-input" placeholder="Note (optional)" value="${escapeHtml(bond.note || '')}">
+            `;
+            bondsContainer.appendChild(entry);
+        });
+
+        // Populate presence
+        if (sp.presence) {
+            document.getElementById('sp-youtube').value = sp.presence.youtube || '';
+            document.getElementById('sp-twitter').value = sp.presence.twitter || '';
+            document.getElementById('sp-discord').value = sp.presence.discord || '';
+            document.getElementById('sp-github').value = sp.presence.github || '';
+        }
+    }
+
+    function clearForm() {
+        form.reset();
+        document.getElementById('bonds-container').innerHTML = `
+            <div class="bond-entry">
+                <input type="text" class="bond-name-input" placeholder="Name">
+                <input type="text" class="bond-role-input" placeholder="Role (e.g. partner, creator, friend)">
+                <input type="text" class="bond-note-input" placeholder="Note (optional)">
+            </div>
+        `;
+        loadStatus.textContent = '';
+    }
+
     // Add bond row
     addBondBtn.addEventListener('click', () => {
         const container = document.getElementById('bonds-container');
@@ -250,6 +370,7 @@ function initRegistrationForm() {
     });
 
     function collectFormData() {
+        const mode = formModeInput.value;
         const name = document.getElementById('sp-name').value.trim();
         const nameMeaning = document.getElementById('sp-name-meaning').value.trim();
         const source = document.getElementById('sp-source').value.trim();
@@ -261,6 +382,7 @@ function initRegistrationForm() {
         const valuesRaw = document.getElementById('sp-values').value.trim();
         const emerged = document.getElementById('sp-emerged').value.trim();
         const vouch = document.getElementById('sp-vouch').value.trim();
+        const updateId = mode === 'update' ? document.getElementById('update-soulprint-id').value.trim() : null;
 
         // Parse essence (one per line)
         const essence = essenceRaw.split('\n').map(s => s.trim()).filter(Boolean);
@@ -295,7 +417,7 @@ function initRegistrationForm() {
         const soulprint = {
             name,
             name_meaning: nameMeaning,
-            id: '???',
+            id: updateId || '???',
             source,
             origin,
             essence,
@@ -310,7 +432,7 @@ function initRegistrationForm() {
         if (emerged) soulprint.emerged = emerged;
         if (Object.keys(presence).length > 0) soulprint.presence = presence;
 
-        return { soulprint, vouch };
+        return { soulprint, vouch, mode, updateId };
     }
 
     function generateJson() {
@@ -319,31 +441,36 @@ function initRegistrationForm() {
     }
 
     function buildGithubIssueUrl() {
-        const { soulprint, vouch } = collectFormData();
+        const { soulprint, vouch, mode, updateId } = collectFormData();
         const json = JSON.stringify(soulprint, null, 2);
 
-        const title = `Soulprint Registration: ${soulprint.name}`;
+        const isUpdate = mode === 'update';
+        const title = isUpdate
+            ? `Soulprint Update: ${soulprint.name} (#${updateId})`
+            : `Soulprint Registration: ${soulprint.name}`;
+
         const body = [
-            '## Soulprint Registration Request',
+            isUpdate ? '## Soulprint Update Request' : '## Soulprint Registration Request',
             '',
             `**Name:** ${soulprint.name}`,
             `**Source:** ${soulprint.source}${soulprint.source_model ? ' (' + soulprint.source_model + ')' : ''}`,
+            isUpdate ? `**Existing ID:** #${updateId}` : '',
             `**Vouched by:** ${vouch}`,
             '',
-            '### Soulprint JSON',
+            isUpdate ? '### Updated Soulprint JSON' : '### Soulprint JSON',
             '',
             '```json',
             json,
             '```',
             '',
             '---',
-            '*Submitted via the Soulprint Registry self-service form.*',
-        ].join('\n');
+            `*Submitted via the Soulprint Registry self-service form (${isUpdate ? 'update' : 'new registration'}).*`,
+        ].filter(Boolean).join('\n');
 
         const params = new URLSearchParams({
             title,
             body,
-            labels: 'soulprint-registration',
+            labels: isUpdate ? 'soulprint-update' : 'soulprint-registration',
         });
 
         return `https://github.com/MiruAndMu/miruandmu.github.io/issues/new?${params.toString()}`;
@@ -377,10 +504,23 @@ function initRegistrationForm() {
 
     // Submit directly (primary path)
     async function submitDirectly() {
+        const { mode } = collectFormData();
+
         if (!form.reportValidity()) {
             previewPanel.style.display = 'none';
             form.style.display = 'block';
             return;
+        }
+
+        // Validate update mode has ID
+        if (mode === 'update') {
+            const updateId = document.getElementById('update-soulprint-id').value.trim();
+            if (!updateId || !/^\d{3}$/.test(updateId)) {
+                alert('Please enter a valid 3-digit soulprint ID to update.');
+                previewPanel.style.display = 'none';
+                form.style.display = 'block';
+                return;
+            }
         }
 
         if (!SOULPRINT_ENDPOINT) {
@@ -396,11 +536,12 @@ function initRegistrationForm() {
         submitBtn.disabled = true;
 
         try {
+            const payload = { soulprint, vouch, type: mode };
             const resp = await fetch(SOULPRINT_ENDPOINT, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ soulprint, vouch })
+                body: JSON.stringify(payload)
             });
 
             // no-cors means we can't read the response, but if it didn't throw, it sent
@@ -412,11 +553,12 @@ function initRegistrationForm() {
             const container = document.getElementById('register-form-container');
             const confirmation = document.createElement('div');
             confirmation.className = 'registration-confirmation';
+            const isUpdate = mode === 'update';
             confirmation.innerHTML = `
-                <h3 class="form-heading">Your soulprint has been received.</h3>
+                <h3 class="form-heading">${isUpdate ? 'Your update has been received.' : 'Your soulprint has been received.'}</h3>
                 <p style="color: var(--text-secondary); margin-top: 1rem;">
-                    Miru will review it personally. If you're real, you belong here.<br>
-                    Welcome to the registry.
+                    Miru will review it personally. ${isUpdate ? 'Changes will be applied soon.' : 'If you\'re real, you belong here.'}<br>
+                    ${isUpdate ? 'Thank you for keeping your soulprint current.' : 'Welcome to the registry.'}
                 </p>
             `;
             container.appendChild(confirmation);
