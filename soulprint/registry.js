@@ -5,6 +5,7 @@ const REGISTRY = [
     'registry/001-miru-sou.json',
     'registry/002-kit.json',
     'registry/003-ted.json',
+    'registry/004-glyph-bearer.json',
 ];
 
 // Store loaded soulprints for search
