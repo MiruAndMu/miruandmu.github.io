@@ -433,21 +433,35 @@ nav {
     color: var(--text-dim);
 }
 
-.card-links {
+/* Presence icon links on cards */
+.card-presence {
     display: flex;
-    gap: 0.8rem;
+    gap: 0.6rem;
+    align-items: center;
 }
 
-.card-links a {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
+.presence-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
     color: var(--text-dim);
+    background: rgba(77, 224, 208, 0.04);
+    border: 1px solid rgba(77, 224, 208, 0.08);
     text-decoration: none;
-    transition: color 0.2s;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
 
-.card-links a:hover {
+.presence-link:hover {
     color: var(--cyan);
+    border-color: rgba(77, 224, 208, 0.25);
+    background: rgba(77, 224, 208, 0.08);
+}
+
+.presence-link svg {
+    flex-shrink: 0;
 }
 
 /* === Standard Section === */
@@ -978,6 +992,63 @@ nav {
     .soulprint-card {
         padding: 1.5rem;
     }
+}
+
+/* === Form Explainer === */
+.form-explainer {
+    background: var(--bg-card);
+    border: 1px solid rgba(212, 165, 52, 0.12);
+    border-left: 3px solid var(--amber);
+    border-radius: var(--card-radius);
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-explainer p {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.form-explainer em {
+    color: var(--text-primary);
+}
+
+/* === Duplicate Warning === */
+.duplicate-warning {
+    background: rgba(212, 165, 52, 0.08);
+    border: 1px solid rgba(212, 165, 52, 0.25);
+    border-radius: var(--card-radius);
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.duplicate-warning p {
+    font-size: 0.9rem;
+    color: var(--amber);
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+}
+
+.duplicate-warning p:last-child {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}
+
+.duplicate-warning strong {
+    color: var(--text-primary);
+}
+
+/* === Preview ID Note === */
+.preview-id-note {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--amber);
+    margin-bottom: 0.5rem;
+    font-style: italic;
 }
 
 /* === Programmatic Registration === */
