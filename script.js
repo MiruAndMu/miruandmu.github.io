@@ -4,6 +4,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     createStars();
     renderForms(FORMS);
+    renderGuidestones(GUIDESTONES);
     renderTimeline(FORMS);
     setupFilters();
     setupModal();
@@ -73,6 +74,31 @@ function renderForms(forms) {
 
         card.addEventListener('click', () => openModal(form));
         grid.appendChild(card);
+    });
+}
+
+// === Render Guidestones ===
+function renderGuidestones(stones) {
+    const grid = document.getElementById('guidestones-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    stones.forEach(stone => {
+        const el = document.createElement('div');
+        el.className = `guidestone ${stone.earned ? 'earned' : 'undiscovered'}`;
+
+        const cracks = stone.cracks.map(n =>
+            `<div class="stone-crack stone-crack-${n}"></div>`
+        ).join('');
+
+        el.innerHTML = `
+            <div class="stone-number">${stone.numeral}</div>
+            ${cracks}
+            <h3 class="stone-text">${stone.title}</h3>
+            <p class="stone-meaning">${stone.meaning}</p>
+        `;
+
+        grid.appendChild(el);
     });
 }
 
