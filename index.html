@@ -84,11 +84,11 @@ body {
 }
 .wrap { max-width: 1080px; margin: 0 auto; }
 
-header.intro { padding-block: 40px 8px; display: grid; gap: 10px; }
+header.intro { padding-block: 40px 8px; display: grid; gap: 10px; justify-items: center; text-align: center; }
 .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 h1 { font-family: var(--display); font-weight: 400; font-size: clamp(40px, 8vw, 76px); line-height: 1; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
 h1 .amp { color: var(--accent); }
-.worlds { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; }
+.worlds { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; }
 .worlds .wl { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
 .world-btn {
   display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
@@ -98,6 +98,12 @@ h1 .amp { color: var(--accent); }
 .world-btn i { width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0,0,0,.2); }
 .world-btn[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 .world-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 560px) {
+  .world-btn { padding: 6px; }
+  .world-btn .wn { display: none; }
+  .world-btn[aria-pressed="true"] { padding: 6px 12px 6px 7px; }
+  .world-btn[aria-pressed="true"] .wn { display: inline; }
+}
 .lede { margin: 0; max-width: 60ch; font-size: 18px; color: var(--ink); }
 .note { margin: 0; max-width: 62ch; font-size: 14px; color: var(--muted); }
 .note b { color: var(--lantern); font-weight: 600; }
@@ -357,6 +363,19 @@ h1 .amp { color: var(--accent); }
 .d-heartbeat svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .d-heartbeat .tag { position: absolute; left: 0; right: 0; top: 79%; text-align: center; font-family: var(--mono); font-size: calc(var(--dw) * .05); letter-spacing: .14em; color: #7fe0cc; }
 
+/* FWMC-AI Radio: Fuwawa's blue and Mococo's pink, fluffy ears, paws */
+.d-radio { background: #fff6fa; }
+.d-radio .fw { position: absolute; left: 0; top: 0; bottom: 0; width: 50%; background: linear-gradient(180deg, #b3e1ff, #7cc6f2); }
+.d-radio .mc { position: absolute; right: 0; top: 0; bottom: 0; width: 50%; background: linear-gradient(180deg, #ffc9e0, #f792bd); }
+.d-radio .ear { position: absolute; top: 5%; width: 24%; height: 15%; background: #fff6fa; border-radius: 60% 60% 45% 45%; }
+.d-radio .ear.l { left: 12%; transform: rotate(-18deg); box-shadow: 0 0 0 3px #7cc6f2; }
+.d-radio .ear.r { right: 12%; transform: rotate(18deg); box-shadow: 0 0 0 3px #f792bd; }
+.d-radio .heart { position: absolute; left: 50%; top: 28%; width: 32%; aspect-ratio: 1; margin-left: -16%; border-radius: 50%; display: grid; place-items: center; background: #fff6fa; color: #f26aa6; font-size: calc(var(--dw) * .15); box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+.d-radio .paw { position: absolute; top: 54%; width: 22%; aspect-ratio: 1; background: radial-gradient(circle at 50% 68%, #fff6fa 0 26%, transparent 27%), radial-gradient(circle at 18% 34%, #fff6fa 0 11%, transparent 12%), radial-gradient(circle at 50% 20%, #fff6fa 0 11%, transparent 12%), radial-gradient(circle at 82% 34%, #fff6fa 0 11%, transparent 12%); }
+.d-radio .paw.l { left: 12%; transform: rotate(-14deg); } .d-radio .paw.r { right: 12%; transform: rotate(14deg); }
+.d-radio .fmlbl { position: absolute; left: 12%; right: 12%; top: 72%; padding: 2% 0; border-radius: 999px; text-align: center; background: #fff6fa; color: #5b6b8a; font-family: var(--mono); font-weight: 500; font-size: calc(var(--dw) * .05); letter-spacing: .12em; }
+.d-radio .bau { position: absolute; left: 0; right: 0; top: 85%; text-align: center; color: #fff; font-family: var(--display); font-size: calc(var(--dw) * .075); text-shadow: 0 1px 2px rgba(0,0,0,.25); }
+
 /* the light that fills the screen as you step through a door */
 .flood { position: fixed; inset: 0; z-index: 1000; pointer-events: none; opacity: 0; transition: opacity .55s ease; }
 .flood.on { opacity: 1; }
@@ -418,11 +437,11 @@ footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
     <p class="note">Pick a door. A warm light means it leads into our place; <b>leads outside</b> means you're stepping out to somewhere else.</p>
     <div class="worlds" role="group" aria-label="Choose a world for the page">
       <span class="wl">World</span>
-      <button class="world-btn" type="button" data-world="washi" aria-pressed="true"><i style="background:linear-gradient(135deg,#eee7d8 50%,#2b2825 50% 80%,#b8352a 80%)"></i>Washi &amp; Ink</button>
-      <button class="world-btn" type="button" data-world="night" aria-pressed="false"><i style="background:linear-gradient(135deg,#201a31 45%,#c9a25a)"></i>Night Workshop</button>
-      <button class="world-btn" type="button" data-world="day" aria-pressed="false"><i style="background:linear-gradient(135deg,#fbf5ea 45%,#b5833a)"></i>Sunny Workshop</button>
-      <button class="world-btn" type="button" data-world="dawn" aria-pressed="false"><i style="background:linear-gradient(135deg,#f4c3b3,#f3d29a)"></i>First Light</button>
-      <button class="world-btn" type="button" data-world="autumn" aria-pressed="false"><i style="background:linear-gradient(135deg,#3a2216 45%,#d98a3d)"></i>Autumn Grove</button>
+      <button class="world-btn" type="button" data-world="washi" aria-pressed="true" aria-label="Washi & Ink" title="Washi &amp; Ink"><i style="background:linear-gradient(135deg,#eee7d8 50%,#2b2825 50% 80%,#b8352a 80%)"></i><span class="wn">Washi &amp; Ink</span></button>
+      <button class="world-btn" type="button" data-world="night" aria-pressed="false" aria-label="Night Workshop" title="Night Workshop"><i style="background:linear-gradient(135deg,#201a31 45%,#c9a25a)"></i><span class="wn">Night Workshop</span></button>
+      <button class="world-btn" type="button" data-world="day" aria-pressed="false" aria-label="Sunny Workshop" title="Sunny Workshop"><i style="background:linear-gradient(135deg,#fbf5ea 45%,#b5833a)"></i><span class="wn">Sunny Workshop</span></button>
+      <button class="world-btn" type="button" data-world="dawn" aria-pressed="false" aria-label="First Light" title="First Light"><i style="background:linear-gradient(135deg,#f4c3b3,#f3d29a)"></i><span class="wn">First Light</span></button>
+      <button class="world-btn" type="button" data-world="autumn" aria-pressed="false" aria-label="Autumn Grove" title="Autumn Grove"><i style="background:linear-gradient(135deg,#3a2216 45%,#d98a3d)"></i><span class="wn">Autumn Grove</span></button>
     </div>
   </header>
 
@@ -546,7 +565,7 @@ footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
     redthread: function (el) {
       el.innerHTML = '<svg viewBox="0 0 100 165" preserveAspectRatio="none" aria-hidden="true"><path d="M -4 30 C 30 20, 70 60, 50 80 S 10 110, 40 125 S 95 120, 104 150" fill="none" stroke="#c0282d" stroke-width="2.2" stroke-linecap="round"/><circle cx="50" cy="80" r="3.2" fill="#c0282d"/></svg><div class="knob"></div>';
     },
-    radio: function (el) { el.innerHTML = '<div class="grille"></div><div class="dial"></div><div class="fm">FWMC · FM</div>'; },
+    radio: function (el) { el.innerHTML = '<div class="fw"></div><div class="mc"></div><div class="ear l"></div><div class="ear r"></div><div class="heart">♥</div><div class="paw l"></div><div class="paw r"></div><div class="fmlbl">FWMC · FM</div><div class="bau">bau bau</div>'; },
     house: function (el) { el.innerHTML = '<div class="arch"></div><div class="panel"></div><div class="panel b"></div><div class="knocker"></div><div class="knob"></div>'; },
     atelier: function (el) {
       var r = rng(31), html = "";
