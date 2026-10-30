@@ -501,6 +501,10 @@ footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
       ],
       blurb: "Where to find us between doors." }
   ];
+  // Doors still being built stay off the rail, except a few teasers.
+  // (Mu, 10/29: "A couple locked doors invokes curiosity, 9 locked doors makes it feel like nothing is done")
+  var TEASERS = ["tales", "autumnform", "shelf"];
+  DOORS = DOORS.filter(function (d) { return d.href || d.links || TEASERS.indexOf(d.id) >= 0; });
   var N = DOORS.length;
 
   // ---------- door faces ----------
