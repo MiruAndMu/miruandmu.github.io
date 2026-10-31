@@ -390,6 +390,13 @@ h1 .amp { color: var(--accent); }
 }
 .arrow:hover { background: color-mix(in srgb, var(--brass) 20%, transparent); }
 .arrow:focus-visible { outline: 2px solid var(--lantern); outline-offset: 2px; }
+@media (max-width: 560px) {
+  /* phones: the caption gets the full width and the arrows sit on their own row below it */
+  .controls { grid-template-columns: 1fr 1fr; grid-template-areas: "cap cap" "prev next"; row-gap: 8px; }
+  .caption { grid-area: cap; }
+  #prev { grid-area: prev; justify-self: start; }
+  #next { grid-area: next; justify-self: end; }
+}
 .caption { min-width: 0; text-align: center; display: grid; gap: 4px; justify-items: center; }
 .caption .cn { font-family: var(--display); font-size: clamp(24px, 4vw, 32px); line-height: 1.1; }
 .caption .cb { color: var(--muted); max-width: 52ch; font-size: 15px; }
@@ -460,7 +467,7 @@ footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
       </div>
       <button class="arrow" id="next" type="button" aria-label="Next door">&#8594;</button>
     </div>
-    <p class="hint">Drag, swipe or scroll to turn the rail. Click the lit door to go through.</p>
+    <p class="hint" id="hint">Drag, swipe or scroll to turn the rail. Click the lit door to go through.</p>
   </section>
 
   <section class="every" aria-labelledby="every-h">
@@ -826,6 +833,7 @@ footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
 
   function go(step) { target = Math.round(target) + step; }
   function goTo(i) { target = Math.round(target) + wrapD(i - Math.round(target)); }
+  if (window.matchMedia("(hover: none)").matches) document.getElementById("hint").textContent = "Swipe to turn the rail. Tap the lit door to go through.";
   document.getElementById("prev").addEventListener("click", function () { go(-1); });
   document.getElementById("next").addEventListener("click", function () { go(1); });
 
