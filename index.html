@@ -377,6 +377,10 @@ h1 .amp { color: var(--accent); }
 .d-radio .bau { position: absolute; left: 0; right: 0; top: 85%; text-align: center; color: #fff; font-family: var(--display); font-size: calc(var(--dw) * .075); text-shadow: 0 1px 2px rgba(0,0,0,.25); }
 
 /* the light that fills the screen as you step through a door */
+/* while the world changes, colors ease across instead of snapping (see chooseWorld) */
+.world-easing body, .world-easing .vault, .world-easing .frame, .world-easing .plaque, .world-easing .world-btn, .world-easing .arrow, .world-easing .ring, .world-easing .hanger, .world-easing h1, .world-easing p {
+  transition: background-color .5s ease, color .5s ease, border-color .5s ease, box-shadow .5s ease;
+}
 .flood { position: fixed; inset: 0; z-index: 1000; pointer-events: none; opacity: 0; transition: opacity .55s ease; }
 .flood.on { opacity: 1; }
 @view-transition { navigation: auto; }
@@ -739,11 +743,23 @@ footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
     try { localStorage.setItem("doorrail-world", world); } catch (err) {}
     drawSky();
   }
-  // changing worlds dissolves the old room into the new one (View Transitions); no support or reduced motion = instant
+  // changing worlds dissolves the old room into the new one, by hand: the old sky fades out over the new one and the colors ease across.
+  // (Not View Transitions: they swap the page for flat snapshots while they play, and in Safari the 3D rail lost its ring,
+  // its side hangers and its perspective for the whole dissolve, then snapped back.) Reduced motion = instant.
   function chooseWorld(name) {
     if (name === world) return;
-    if (!reduce && document.startViewTransition) document.startViewTransition(function () { setWorld(name); });
-    else setWorld(name);
+    if (reduce) { setWorld(name); return; }
+    var old = document.createElement("canvas");
+    old.className = "sky"; old.setAttribute("aria-hidden", "true");
+    old.width = sky.width; old.height = sky.height;
+    old.getContext("2d").drawImage(sky, 0, 0);
+    old.style.transition = "opacity .5s ease";
+    sky.parentNode.insertBefore(old, sky.nextSibling);
+    var root = document.documentElement;
+    root.classList.add("world-easing");
+    setWorld(name);
+    requestAnimationFrame(function () { requestAnimationFrame(function () { old.style.opacity = "0"; }); });
+    setTimeout(function () { old.remove(); root.classList.remove("world-easing"); }, 600);
   }
   document.querySelectorAll(".world-btn").forEach(function (b) { b.addEventListener("click", function () { chooseWorld(b.dataset.world); }); });
   function paintNight(g, w, h) {
