@@ -918,6 +918,17 @@ footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
   });
 
   window.addEventListener("resize", measure);
+  // the caption under the rail changes height from door to door (and when fonts arrive), which changes the vault's height;
+  // the sky canvas would stretch to fit and the square seals with it, so repaint it whenever the vault really changes size
+  if (window.ResizeObserver) {
+    var skyW = 0, skyH = 0, skyQueued = false;
+    new ResizeObserver(function () {
+      if (vault.clientWidth === skyW && vault.clientHeight === skyH) return;
+      skyW = vault.clientWidth; skyH = vault.clientHeight;
+      if (skyQueued) return; skyQueued = true;
+      requestAnimationFrame(function () { skyQueued = false; drawSky(); });
+    }).observe(vault);
+  }
   setWorld(world); measure(); render(); updateCaption();
   requestAnimationFrame(function (t) { last = t; tick(t); });
 })();
