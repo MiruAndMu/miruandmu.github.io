@@ -387,6 +387,7 @@ h1 .amp { color: var(--accent); }
   width: 46px; height: 46px; border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--brass) 55%, transparent); background: color-mix(in srgb, var(--brass) 10%, transparent); color: var(--brass);
   font-size: 20px; line-height: 1; cursor: pointer; display: grid; place-items: center;
+  touch-action: manipulation; /* fast taps step doors; no double-tap zoom on phones */
 }
 .arrow:hover { background: color-mix(in srgb, var(--brass) 20%, transparent); }
 .arrow:focus-visible { outline: 2px solid var(--lantern); outline-offset: 2px; }
@@ -904,7 +905,8 @@ footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
     walkThrough(i);
   }
   // coming back (the back button) shouldn't leave the screen full of light
-  window.addEventListener("pageshow", function () { flood.classList.remove("on"); slots.forEach(function (s) { s.classList.remove("open"); }); });
+  // and the flood's color goes too: iPhone Safari tints its toolbars from a full-screen fixed layer's background, even a transparent one
+  window.addEventListener("pageshow", function () { flood.classList.remove("on"); flood.style.background = ""; slots.forEach(function (s) { s.classList.remove("open"); }); });
   slots.forEach(function (s, i) {
     s.addEventListener("click", function (e) {
       if (moved > 6) { e.preventDefault(); moved = 0; return; }
