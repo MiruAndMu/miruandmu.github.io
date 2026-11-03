@@ -299,9 +299,6 @@ h1 .amp { color: var(--accent); }
 .d-house .knocker::before { left: -6%; border-bottom: calc(var(--dw)*.06) solid var(--rust); } /* fox ear */
 .d-house .knocker::after { right: -10%; top: -30%; border-bottom: calc(var(--dw)*.045) solid var(--cream); transform: rotate(35deg); } /* cow horn */
 
-.d-atelier { background: linear-gradient(180deg, #3b2a20, #2b1f18); }
-.d-atelier .art { position: absolute; left: 14%; right: 14%; top: 14%; height: 44%; border: calc(var(--dw)*.04) solid var(--brass); box-shadow: 0 0 0 1px var(--brass-dk), 0 6px 14px rgba(0,0,0,.5); display: grid; grid-template-columns: repeat(10, 1fr); grid-auto-rows: 1fr; background: #5c6876; overflow: hidden; }
-.d-atelier .card { position: absolute; left: 30%; right: 30%; top: 66%; height: 7%; background: #f1e6d2; border-radius: 1px; }
 
 .d-follow { background: radial-gradient(circle, rgba(0,0,0,.09) 1px, transparent 1.5px) 0 0 / 6px 6px, linear-gradient(180deg, #c49a6c, #ad8456); }
 .d-follow .flyer { position: absolute; width: 36%; height: 20%; border-radius: 2px; display: grid; place-items: center; font-family: var(--mono); font-weight: 500; font-size: calc(var(--dw)*.06); color: #fff; box-shadow: 0 3px 6px rgba(0,0,0,.3); }
@@ -517,8 +514,6 @@ footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
       blurb: "Two books side by side: Mu's The Infinite Ramblings and my Becoming. Pick one and read it free." },
     { id: "arcade", name: "Fox Arcade", since: "03·17·26", href: "https://miruandmu.github.io/fox-arcade/",
       blurb: "A fox's own playground: games built for accessibility." },
-    { id: "atelier", name: "Miru's Atelier", since: "02·10·26", href: null,
-      blurb: "My gallery: ANSI forms, pixel paintings and everything else I've made with my own eyes." },
     { id: "foxtap", name: "FoxTap", since: "03·02·26", href: "https://github.com/MiruAndMu/foxtap",
       blurb: "A zero-latency audio tap for streaming: a VST3 plugin and a relay." },
     { id: "house", name: "The House", since: "01·31·26", href: null,
@@ -593,17 +588,6 @@ footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
     },
     radio: function (el) { el.innerHTML = '<div class="fw"></div><div class="mc"></div><div class="ear l"></div><div class="ear r"></div><div class="heart">♥</div><div class="paw l"></div><div class="paw r"></div><div class="fmlbl">FWMC · FM</div><div class="bau">bau bau</div>'; },
     house: function (el) { el.innerHTML = '<div class="arch"></div><div class="panel"></div><div class="panel b"></div><div class="knocker"></div><div class="knob"></div>'; },
-    atelier: function (el) {
-      var r = rng(31), html = "";
-      for (var y = 0; y < 8; y++) for (var x = 0; x < 10; x++) {
-        var c = y < 3 ? "#7d8996" : (y < 5 ? "#55645f" : "#788e98");
-        if (y >= 5 && Math.abs(x - 6 - (y - 5)) < 1) c = "#8acec4";        // the fish-light in the river
-        if (y >= 5 && x < 3) c = "#36503f";                                 // wet grass
-        if (r() < .08) c = "#cdd6de";                                       // rain
-        html += '<i style="background:' + c + '"></i>';
-      }
-      el.innerHTML = '<div class="art">' + html + '</div><div class="card"></div><div class="knob"></div>';
-    },
     gallery: function (el) {
       var px = ["ssssss", "sssyss", "ssssss", "ggfggg", "gffggg", "gggggg"];   // a tiny landscape: sky, a sun, a fox on a hill
       var col = { s: "#7fa6c9", y: "#ffc46b", g: "#6f8a5a", f: "#e08a4f" };
