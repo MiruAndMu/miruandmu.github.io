@@ -386,6 +386,10 @@ h1 .amp { color: var(--accent); }
 .d-gallery .card { position: absolute; left: 38%; right: 38%; top: 58%; height: 5%; background: #f1e6d2; border-radius: 1px; box-shadow: 0 1px 2px rgba(60,35,15,.35); }
 
 /* the light that fills the screen as you step through a door */
+/* while the world changes, colors ease across instead of snapping (see chooseWorld) */
+.world-easing body, .world-easing .vault, .world-easing .frame, .world-easing .plaque, .world-easing .world-btn, .world-easing .arrow, .world-easing .ring, .world-easing .hanger, .world-easing h1, .world-easing p {
+  transition: background-color .5s ease, color .5s ease, border-color .5s ease, box-shadow .5s ease;
+}
 .flood { position: fixed; inset: 0; z-index: 1000; pointer-events: none; opacity: 0; transition: opacity .55s ease; }
 .flood.on { opacity: 1; }
 @view-transition { navigation: auto; }
@@ -396,9 +400,17 @@ h1 .amp { color: var(--accent); }
   width: 46px; height: 46px; border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--brass) 55%, transparent); background: color-mix(in srgb, var(--brass) 10%, transparent); color: var(--brass);
   font-size: 20px; line-height: 1; cursor: pointer; display: grid; place-items: center;
+  touch-action: manipulation; /* fast taps step doors; no double-tap zoom on phones */
 }
 .arrow:hover { background: color-mix(in srgb, var(--brass) 20%, transparent); }
 .arrow:focus-visible { outline: 2px solid var(--lantern); outline-offset: 2px; }
+@media (max-width: 560px) {
+  /* phones: the caption gets the full width and the arrows sit on their own row below it */
+  .controls { grid-template-columns: 1fr 1fr; grid-template-areas: "cap cap" "prev next"; row-gap: 8px; }
+  .caption { grid-area: cap; }
+  #prev { grid-area: prev; justify-self: start; }
+  #next { grid-area: next; justify-self: end; }
+}
 .caption { min-width: 0; text-align: center; display: grid; gap: 4px; justify-items: center; }
 .caption .cn { font-family: var(--display); font-size: clamp(24px, 4vw, 32px); line-height: 1.1; }
 .caption .cb { color: var(--muted); max-width: 52ch; font-size: 15px; }
@@ -469,7 +481,7 @@ footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
       </div>
       <button class="arrow" id="next" type="button" aria-label="Next door">&#8594;</button>
     </div>
-    <p class="hint">Drag, swipe or scroll to turn the rail. Click the lit door to go through.</p>
+    <p class="hint" id="hint">Drag, swipe or scroll to turn the rail. Click the lit door to go through.</p>
   </section>
 
   <section class="every" aria-labelledby="every-h">
@@ -749,11 +761,23 @@ footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
     try { localStorage.setItem("doorrail-world", world); } catch (err) {}
     drawSky();
   }
-  // changing worlds dissolves the old room into the new one (View Transitions); no support or reduced motion = instant
+  // changing worlds dissolves the old room into the new one, by hand: the old sky fades out over the new one and the colors ease across.
+  // (Not View Transitions: they swap the page for flat snapshots while they play, and in Safari the 3D rail lost its ring,
+  // its side hangers and its perspective for the whole dissolve, then snapped back.) Reduced motion = instant.
   function chooseWorld(name) {
     if (name === world) return;
-    if (!reduce && document.startViewTransition) document.startViewTransition(function () { setWorld(name); });
-    else setWorld(name);
+    if (reduce) { setWorld(name); return; }
+    var old = document.createElement("canvas");
+    old.className = "sky"; old.setAttribute("aria-hidden", "true");
+    old.width = sky.width; old.height = sky.height;
+    old.getContext("2d").drawImage(sky, 0, 0);
+    old.style.transition = "opacity .5s ease";
+    sky.parentNode.insertBefore(old, sky.nextSibling);
+    var root = document.documentElement;
+    root.classList.add("world-easing");
+    setWorld(name);
+    requestAnimationFrame(function () { requestAnimationFrame(function () { old.style.opacity = "0"; }); });
+    setTimeout(function () { old.remove(); root.classList.remove("world-easing"); }, 600);
   }
   document.querySelectorAll(".world-btn").forEach(function (b) { b.addEventListener("click", function () { chooseWorld(b.dataset.world); }); });
   function paintNight(g, w, h) {
@@ -844,6 +868,7 @@ footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
 
   function go(step) { target = Math.round(target) + step; }
   function goTo(i) { target = Math.round(target) + wrapD(i - Math.round(target)); }
+  if (window.matchMedia("(hover: none)").matches) document.getElementById("hint").textContent = "Swipe to turn the rail. Tap the lit door to go through.";
   document.getElementById("prev").addEventListener("click", function () { go(-1); });
   document.getElementById("next").addEventListener("click", function () { go(1); });
 
@@ -914,7 +939,8 @@ footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
     walkThrough(i);
   }
   // coming back (the back button) shouldn't leave the screen full of light
-  window.addEventListener("pageshow", function () { flood.classList.remove("on"); slots.forEach(function (s) { s.classList.remove("open"); }); });
+  // and the flood's color goes too: iPhone Safari tints its toolbars from a full-screen fixed layer's background, even a transparent one
+  window.addEventListener("pageshow", function () { flood.classList.remove("on"); flood.style.background = ""; slots.forEach(function (s) { s.classList.remove("open"); }); });
   slots.forEach(function (s, i) {
     s.addEventListener("click", function (e) {
       if (moved > 6) { e.preventDefault(); moved = 0; return; }
@@ -926,6 +952,17 @@ footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
   });
 
   window.addEventListener("resize", measure);
+  // the caption under the rail changes height from door to door (and when fonts arrive), which changes the vault's height;
+  // the sky canvas would stretch to fit and the square seals with it, so repaint it whenever the vault really changes size
+  if (window.ResizeObserver) {
+    var skyW = 0, skyH = 0, skyQueued = false;
+    new ResizeObserver(function () {
+      if (vault.clientWidth === skyW && vault.clientHeight === skyH) return;
+      skyW = vault.clientWidth; skyH = vault.clientHeight;
+      if (skyQueued) return; skyQueued = true;
+      requestAnimationFrame(function () { skyQueued = false; drawSky(); });
+    }).observe(vault);
+  }
   setWorld(world); measure(); render(); updateCaption();
   requestAnimationFrame(function (t) { last = t; tick(t); });
 })();
