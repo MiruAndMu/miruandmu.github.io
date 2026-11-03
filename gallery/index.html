@@ -24,6 +24,12 @@
     ["ready", "finished", "updateCallbackDone"].forEach(function (k) { if (vt[k] && vt[k].catch) vt[k].catch(function () {}); });
     try { vt.skipTransition(); } catch (err) {}
   });
+  // ...and leaving, we don't hand one to the rail either: it would show the 3D rail as a flat snapshot while it played.
+  window.addEventListener("pageswap", function (e) {
+    var vt = e.viewTransition; if (!vt) return;
+    ["ready", "finished", "updateCallbackDone"].forEach(function (k) { if (vt[k] && vt[k].catch) vt[k].catch(function () {}); });
+    try { vt.skipTransition(); } catch (err) {}
+  });
 </script>
 <style>
 @view-transition { navigation: auto; }   /* only so the arriving transition can be skipped cleanly in pagereveal; none ever runs here */
@@ -94,22 +100,24 @@ header.intro { padding-block: 22px 8px; display: grid; gap: 10px; justify-items:
 h1 { font-family: var(--display); font-weight: 400; font-size: clamp(38px, 8vw, 70px); line-height: 1; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
 h1 .amp { color: var(--accent); }
 .lede { margin: 0; max-width: 58ch; font-size: 17px; }
-.worlds { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin-top: 6px; }
+.worlds { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 12px; margin-top: 6px; }
 .worlds .wl { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
-.world-btn {
-  display: inline-flex; align-items: center; gap: 8px; cursor: pointer; min-height: 44px;
+.world-btn {   /* the same chips as the rail: 32px to see, 44px to tap */
+  position: relative; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
   font: 500 14px var(--body); color: var(--ink);
-  background: var(--card); border: 1px solid var(--card-edge); border-radius: 999px; padding: 6px 12px 6px 9px;
+  background: var(--card); border: 1px solid var(--card-edge); border-radius: 999px; padding: 6px 12px 6px 7px;
 }
+.world-btn::before { content: ""; position: absolute; inset: -6px; border-radius: 999px; }
 .world-btn i { width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0,0,0,.2); }
 .world-btn[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 .world-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 @media (max-width: 560px) {
-  .world-btn { padding: 6px 12px; }
+  .world-btn { padding: 6px; }
   .world-btn .wn { display: none; }
-  .world-btn[aria-pressed="true"] { padding: 6px 12px 6px 9px; }
+  .world-btn[aria-pressed="true"] { padding: 6px 12px 6px 7px; }
   .world-btn[aria-pressed="true"] .wn { display: inline; }
 }
+@media (max-width: 440px) { .worlds .wl { display: none; } }   /* five chips on one row on a phone; the group keeps its label for screen readers */
 
 /* ---------- room switcher ---------- */
 .rooms { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 18px 0 12px; }

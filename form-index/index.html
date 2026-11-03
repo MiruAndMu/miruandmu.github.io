@@ -10,6 +10,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://miruandmu.github.io/form-index/">
 <style>html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:none}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<style>@view-transition { navigation: auto; }   /* inline, so it is there the moment a transition arrives from the rail: only so it can be skipped below; none ever runs here */</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=EB+Garamond:ital@1&display=swap">
@@ -19,7 +20,7 @@
   (function () { var w = "washi"; try { w = localStorage.getItem("doorrail-world") || w; } catch (err) {} if (["washi", "day", "dawn", "autumn"].indexOf(w) >= 0) document.documentElement.setAttribute("data-world", w); else if (w !== "night") document.documentElement.setAttribute("data-world", "washi"); })();
   // The rail opts into cross-page View Transitions; this page doesn't (they flatten the art in Safari).
   // Chrome still hands us the refused transition, and its rejected promises would show as console errors.
-  // (Same fix as the gallery: @view-transition in styles.css only so the arriving one can be skipped here.)
+  // (Same fix as the gallery: the inline @view-transition above is only there so the arriving one can be skipped here.)
   window.addEventListener("pagereveal", function (e) {
     var vt = e.viewTransition; if (!vt) return;
     ["ready", "finished", "updateCallbackDone"].forEach(function (k) { if (vt[k] && vt[k].catch) vt[k].catch(function () {}); });

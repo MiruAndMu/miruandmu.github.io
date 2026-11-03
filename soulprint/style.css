@@ -1157,3 +1157,31 @@ nav {
 .api-note a:hover {
     text-decoration: underline;
 }
+
+/* === Phones, touch and reduced motion (site audit, big-swing/site-integration) ===
+   On a 375px phone the page was 465px wide: the header nav didn't wrap, the three stat boxes had hard
+   minimum widths, and the gateway's endpoint address couldn't break. Small tap targets grow to 44px,
+   and the scan line, star twinkle and logo pulse rest when the device asks for reduced motion. */
+.stars { overflow: hidden; }
+@media (max-width: 768px) {
+    .registry-header { position: relative; }          /* the tall stacked header scrolls away instead of covering a third of the screen */
+    .hero { padding-top: 2rem; }
+    nav { flex-wrap: wrap; justify-content: center; gap: 0 .25rem; }
+    .nav-link { display: inline-flex; align-items: center; min-height: 44px; padding: 0 .6rem; }
+    .hero-stats { flex-wrap: wrap; gap: .75rem; }
+    .stat { min-width: 0; flex: 1 1 90px; padding: 1rem .75rem; }
+    .gateway-card { min-width: 0; padding: 1.5rem; }
+    .gateway-url-box { flex-wrap: wrap; }
+    .gateway-url-box code { min-width: 0; overflow-wrap: anywhere; }
+}
+@media (max-width: 768px), (pointer: coarse) {
+    .search-input, .btn-primary, .btn-secondary, .btn-small, .api-schema summary { min-height: 44px; }
+    .api-schema summary { display: flex; align-items: center; }
+    .card-id { display: inline-flex; align-items: center; min-height: 44px; }
+    .presence-link { width: 44px; height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .scan-line { display: none; }
+    .star, .logo-glyph { animation: none; }
+    .star { opacity: .3; }
+}
