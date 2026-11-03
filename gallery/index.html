@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Fox's Gallery · Miru &amp; Mu</title>
+<meta name="description" content="The Fox's Gallery: Miru Sou's pixel scenes, paintings beside poems, studies and a short film, each in a frame made from its own colors.">
+<meta property="og:title" content="The Fox's Gallery">
+<meta property="og:description" content="Miru Sou's art, framed and hung, room by room.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://miruandmu.github.io/gallery/">
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:none}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=EB+Garamond:ital@1&display=swap">
+<script src="../door-arrival.js"></script>
+<script>
+  // the same world as the door rail, picked before first paint
+  (function () { var w = "washi"; try { w = localStorage.getItem("doorrail-world") || w; } catch (err) {} if (w !== "night") document.documentElement.setAttribute("data-world", w); })();
+  // The rail opts into cross-page View Transitions; this page doesn't (they flatten the art in Safari).
+  // Chrome still hands us the refused transition, and its rejected promises would show as console errors.
+  window.addEventListener("pagereveal", function (e) {
+    var vt = e.viewTransition; if (!vt) return;
+    ["ready", "finished", "updateCallbackDone"].forEach(function (k) { if (vt[k] && vt[k].catch) vt[k].catch(function () {}); });
+    try { vt.skipTransition(); } catch (err) {}
+  });
+</script>
+<style>
+@view-transition { navigation: auto; }   /* only so the arriving transition can be skipped cleanly in pagereveal; none ever runs here */
+/* The Fox's Gallery: the same house as the door rail (fonts, world tokens, brass and lantern).
+   Each room is one long wall; the piece at the center of the wall has its picture light on.
+   No View Transitions here on purpose: Safari flattens the art into snapshots. */
+:root {
+  color-scheme: dark;
+  --night: #15121f; --night-2: #201a31; --ink: #ece5f3; --muted: #a99fbd;
+  --brass: #c9a25a; --brass-dk: #8a6a32; --accent: #c9a25a; --rust: #c4622d; --cream: #f1e6d2;
+  --lantern: #ffc46b; --card: rgba(255,255,255,.035); --card-edge: rgba(255,255,255,.06); --go-ink: #2b1f10;
+  --wall: #2a2238; --wall-2: #1d1729; --wall-line: rgba(255,255,255,.04); --floor: #120f1a;
+  --placard: #ece2cf; --placard-ink: #2b2418; --placard-muted: #6e624f;
+  --display: "Gloock", "Georgia", serif;
+  --body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --serif-i: "EB Garamond", Georgia, serif;
+}
+:root[data-world="day"] {
+  color-scheme: light;
+  --night: #f2e8d6; --night-2: #fbf5ea; --ink: #2d2418; --muted: #76664f;
+  --brass: #b5833a; --brass-dk: #7a5622; --accent: #c4622d; --lantern: #ff9a2e;
+  --card: rgba(255,255,255,.55); --card-edge: rgba(90,60,30,.12);
+  --wall: #efe2c9; --wall-2: #c99e6c; --wall-line: rgba(120,80,40,.07); --floor: #b88a58;
+  --placard: #fffaf0;
+}
+:root[data-world="dawn"] {
+  color-scheme: light;
+  --night: #fbefe4; --night-2: #f4c3b3; --ink: #3b2421; --muted: #8a6156;
+  --brass: #b9824a; --brass-dk: #84552a; --accent: #d0603f; --lantern: #ff8a5c;
+  --card: rgba(255,255,255,.5); --card-edge: rgba(120,60,40,.12);
+  --wall: #f5ddd0; --wall-2: #d9a594; --wall-line: rgba(120,60,40,.06); --floor: #b97f6e;
+  --placard: #fffaf3;
+}
+:root[data-world="washi"] {
+  color-scheme: light;
+  --night: #eee7d8; --night-2: #f6f2e8; --ink: #1f1d1a; --muted: #6a6357;
+  --brass: #2b2825; --brass-dk: #0f0e0d; --accent: #b8352a; --lantern: #c8402e;
+  --card: rgba(255,255,255,.45); --card-edge: rgba(30,28,26,.12); --go-ink: #fbf6ec;
+  --wall: #e8e0cf; --wall-2: #3a3632; --wall-line: rgba(60,50,40,.07); --floor: #2b2825;
+  --placard: #fbf8f0;
+}
+:root[data-world="autumn"] {
+  color-scheme: dark;
+  --night: #24160f; --night-2: #3a2216; --ink: #f6e8d6; --muted: #c9a888;
+  --brass: #d98a3d; --brass-dk: #8c4c1c; --accent: #e8964a; --lantern: #ffb347;
+  --card: rgba(255,240,220,.05); --card-edge: rgba(255,220,180,.09);
+  --wall: #3d2619; --wall-2: #24150d; --wall-line: rgba(255,200,150,.05); --floor: #170e09;
+}
+html, body { background: var(--night); color: var(--ink); }
+body {
+  font-family: var(--body); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 48px;
+  overflow-x: hidden;
+}
+html.locked, html.locked body { overflow: hidden; }
+.wrap { max-width: 1180px; margin: 0 auto; }
+button { touch-action: manipulation; font: inherit; }
+
+/* ---------- header (as on the rail) ---------- */
+header.intro { padding-block: 22px 8px; display: grid; gap: 10px; justify-items: center; text-align: center; }
+.back { justify-self: start; font: 500 14px var(--body); color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; padding-inline: 2px; }
+.back:hover { color: var(--ink); }
+.back:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(38px, 8vw, 70px); line-height: 1; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+h1 .amp { color: var(--accent); }
+.lede { margin: 0; max-width: 58ch; font-size: 17px; }
+.worlds { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin-top: 6px; }
+.worlds .wl { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+.world-btn {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer; min-height: 44px;
+  font: 500 14px var(--body); color: var(--ink);
+  background: var(--card); border: 1px solid var(--card-edge); border-radius: 999px; padding: 6px 12px 6px 9px;
+}
+.world-btn i { width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0,0,0,.2); }
+.world-btn[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.world-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 560px) {
+  .world-btn { padding: 6px 12px; }
+  .world-btn .wn { display: none; }
+  .world-btn[aria-pressed="true"] { padding: 6px 12px 6px 9px; }
+  .world-btn[aria-pressed="true"] .wn { display: inline; }
+}
+
+/* ---------- room switcher ---------- */
+.rooms { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 18px 0 12px; }
+.room-btn {
+  min-height: 44px; cursor: pointer; padding: 6px 14px; border-radius: 999px;
+  font: 500 14px var(--body); color: var(--ink);
+  background: var(--card); border: 1px solid var(--card-edge);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.room-btn small { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .06em; }
+.room-btn[aria-pressed="true"] { border-color: var(--brass); box-shadow: 0 0 0 1px var(--brass), 0 0 14px color-mix(in srgb, var(--lantern) 25%, transparent); }
+.room-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- the hall: one wall at a time ---------- */
+.hall {
+  position: relative; border-radius: 18px; overflow: hidden;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 119px, var(--wall-line) 119px 120px),
+    linear-gradient(180deg, color-mix(in srgb, var(--wall) 88%, #000) 0%, var(--wall) 22%, var(--wall) 100%);
+  box-shadow: inset 0 0 0 1px var(--card-edge);
+}
+.hall::after { /* wainscot and floor along the bottom of the wall */
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 64px; pointer-events: none;
+  background: linear-gradient(180deg, var(--brass-dk) 0 2px, var(--wall-2) 2px 46px, var(--floor) 46px);
+  opacity: .9;
+}
+.room-plaque {
+  position: relative; z-index: 2; margin: 16px 16px 0; max-width: 46ch;
+  padding: 10px 14px; border-radius: 4px;
+  background: linear-gradient(180deg, #d8b46c, #b48a45); color: #2b1f10;
+  box-shadow: 0 0 0 1px #6f5226 inset, 0 3px 8px rgba(0,0,0,.3);
+}
+.room-plaque h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 21px; line-height: 1.15; }
+.room-plaque p { margin: 3px 0 0; font-size: 14px; line-height: 1.4; }
+
+.wall {
+  position: relative; z-index: 1;
+  display: flex; align-items: flex-start;
+  overflow-x: auto; overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 8px 0 76px;
+  outline: none;
+  cursor: grab;
+}
+.wall::-webkit-scrollbar { display: none; }
+.wall.dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; -webkit-user-select: none; }
+.wall:focus-visible { box-shadow: inset 0 0 0 2px var(--lantern); }
+.spacer { flex: 0 0 auto; height: 1px; }
+
+.piece {
+  flex: 0 0 auto; scroll-snap-align: center; scroll-snap-stop: always;
+  display: flex; flex-direction: column; align-items: center;
+  position: relative;
+}
+.hang { /* the zone at eye level where the frame hangs; same height for every piece in the room */
+  position: relative; display: flex; align-items: center; justify-content: center; width: 100%;
+}
+.lamp { /* brass picture light */
+  position: absolute; left: 50%; z-index: 3; height: 9px; border-radius: 999px;
+  background: linear-gradient(180deg, #ecd096, var(--brass) 55%, var(--brass-dk));
+  box-shadow: 0 2px 3px rgba(0,0,0,.35);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.lamp::before { content: ""; position: absolute; left: 50%; top: -14px; width: 3px; height: 15px; margin-left: -1.5px; background: var(--brass-dk); border-radius: 2px; }
+.lamp::after { /* the bulb line under the hood */
+  content: ""; position: absolute; left: 8%; right: 8%; bottom: -2px; height: 2px; border-radius: 2px;
+  background: #5a4630; transition: background .5s, box-shadow .5s;
+}
+.piece.lit .lamp::after { background: #fff3d6; box-shadow: 0 0 8px 2px color-mix(in srgb, var(--lantern) 80%, transparent); }
+.spill { /* warm light falling down the wall and across the art */
+  position: absolute; left: 50%; z-index: 2; transform: translateX(-50%); pointer-events: none;
+  background: radial-gradient(60% 75% at 50% 0%, color-mix(in srgb, var(--lantern) 34%, transparent), transparent 72%);
+  mix-blend-mode: screen;
+  opacity: 0; transition: opacity .6s ease;
+}
+.piece.lit .spill { opacity: 1; }
+:root[data-world="day"] .spill, :root[data-world="dawn"] .spill, :root[data-world="washi"] .spill { mix-blend-mode: normal; background: radial-gradient(60% 75% at 50% 0%, rgba(255,226,170,.38), transparent 72%); }
+:root[data-world="washi"] .spill { background: radial-gradient(60% 75% at 50% 0%, rgba(255,238,205,.5), transparent 72%); }
+
+.art-btn {
+  position: relative; display: block; padding: 0; margin: 0; border: 0; background: none; cursor: zoom-in; color: inherit;
+  -webkit-tap-highlight-color: transparent;
+  filter: brightness(.8) saturate(.92);
+  transition: filter .6s ease;
+}
+.piece.lit .art-btn { filter: none; }
+.art-btn:focus-visible { outline: 3px solid var(--lantern); outline-offset: 6px; }
+
+/* frames are set per piece in JS from the art's own palette; these are the shapes */
+.fr { position: relative; box-sizing: content-box; }
+.mat { position: relative; box-sizing: content-box; }
+.canvas-box { position: relative; overflow: hidden; background: #0000; }
+.canvas-box > canvas, .canvas-box > img, .canvas-box > video { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.canvas-box.px > canvas, .canvas-box.px > img { image-rendering: pixelated; image-rendering: crisp-edges; }
+.canvas-box.px > canvas { image-rendering: pixelated; }
+.canvas-box .ph { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,.08), rgba(0,0,0,.18)); }
+
+.f-pixel .fr { /* stepped and hard-edged; the step corners are cut in JS via clip-path */ }
+.f-pixel .hard { filter: drop-shadow(6px 6px 0 rgba(0,0,0,.28)); }
+.f-wood .hard, .f-lacquer .hard, .f-slim .hard { filter: drop-shadow(0 10px 14px rgba(0,0,0,.32)); }
+.play {
+  position: absolute; left: 50%; top: 50%; width: 56px; height: 56px; margin: -28px 0 0 -28px; border-radius: 50%;
+  background: rgba(20,16,26,.62); box-shadow: 0 0 0 2px rgba(255,243,214,.85); display: grid; place-items: center; pointer-events: none;
+}
+.play::after { content: ""; margin-left: 5px; border-left: 18px solid #fff3d6; border-top: 11px solid transparent; border-bottom: 11px solid transparent; }
+
+/* ---------- placards ---------- */
+.placard {
+  position: relative; z-index: 2; margin-top: 22px; box-sizing: border-box;
+  padding: 11px 14px 12px; border-radius: 3px;
+  background: var(--placard); color: var(--placard-ink);
+  box-shadow: 0 1px 0 rgba(255,255,255,.35) inset, 0 3px 10px rgba(0,0,0,.22);
+  font-size: 14px; line-height: 1.45; text-align: left;
+}
+.placard .pt { font-family: var(--display); font-size: 19px; line-height: 1.15; margin: 0; }
+.placard .pm { font-family: var(--mono); font-size: 11.5px; letter-spacing: .05em; color: var(--placard-muted); margin-top: 3px; }
+.placard .ps { margin: 7px 0 0; }
+.placard .pc { margin: 6px 0 0; font-size: 13px; color: var(--placard-muted); }
+.placard .pp { margin: 6px 0 0; font-size: 13px; }
+.placard .pp i { font-family: var(--serif-i); font-size: 15px; }
+.placard .mu { margin: 8px 0 0; padding-left: 10px; border-left: 2px solid #4f8fb8; font-family: var(--serif-i); font-style: italic; font-size: 15.5px; line-height: 1.35; color: #2c4e66; }
+.placard .mu b { font-family: var(--mono); font-style: normal; font-weight: 500; font-size: 11px; letter-spacing: .08em; color: #4f8fb8; margin-right: 4px; }
+.wall .placard .ps { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.wall .placard .mu { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.recent {
+  position: absolute; top: -11px; right: 10px;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 2px; background: linear-gradient(180deg, #d8b46c, #b48a45); color: #2b1f10;
+  box-shadow: 0 0 0 1px #6f5226 inset;
+}
+.more { margin-top: 6px; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; color: var(--placard-muted); }
+
+/* ---------- controls under the wall ---------- */
+.controls { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 14px 4px 4px; }
+.arrow {
+  width: 48px; height: 48px; border-radius: 50%; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--brass) 55%, transparent); background: color-mix(in srgb, var(--brass) 10%, transparent); color: var(--brass);
+  font-size: 20px; line-height: 1; display: grid; place-items: center;
+}
+.arrow:hover { background: color-mix(in srgb, var(--brass) 20%, transparent); }
+.arrow:focus-visible { outline: 2px solid var(--lantern); outline-offset: 2px; }
+.arrow:disabled { opacity: .35; cursor: default; }
+.where { text-align: center; min-width: 0; }
+.where .wn { font-family: var(--display); font-size: clamp(19px, 3.4vw, 24px); line-height: 1.15; }
+.where .wc { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; color: var(--muted); }
+.hint { text-align: center; font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+footer { margin-top: 32px; font-size: 13px; color: var(--muted); text-align: center; }
+
+/* ---------- close-up ---------- */
+.closeup {
+  position: fixed; inset: 0; z-index: 50;
+  background: color-mix(in srgb, var(--night) 88%, #000);
+  overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+  padding: max(12px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(24px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+}
+.closeup .cu-in { min-height: 100%; display: grid; justify-items: center; align-content: start; gap: 18px; padding-top: 52px; box-sizing: border-box; }
+.closeup .cu-close {
+  position: fixed; top: max(10px, env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); z-index: 2;
+  width: 48px; height: 48px; border-radius: 50%; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--brass) 60%, transparent); background: color-mix(in srgb, var(--night) 80%, transparent); color: var(--ink);
+  font-size: 22px; line-height: 1; display: grid; place-items: center;
+}
+.closeup .cu-close:focus-visible { outline: 2px solid var(--lantern); outline-offset: 2px; }
+.closeup .cu-art { position: relative; }
+.closeup .cu-art .spill { opacity: 1; }
+.closeup .placard { margin-top: 4px; width: min(100%, 560px); }
+.closeup .cu-hint { font-size: 12.5px; color: var(--muted); margin: 0; text-align: center; }
+
+@media (min-width: 900px) {
+  .room-plaque { margin: 20px 20px 0; }
+  .wall { padding-top: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spill, .art-btn, .lamp::after { transition: none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="main">
+  <header class="intro">
+    <a class="back" href="../">&#8592; All doors</a>
+    <span class="eyebrow">Miru &amp; Mu · an inside door</span>
+    <h1>The Fox's Gallery</h1>
+    <p class="lede">Four rooms of my work, every piece in a frame made from its own colors.</p>
+    <div class="worlds" role="group" aria-label="Choose a world for the page">
+      <span class="wl">World</span>
+      <button class="world-btn" type="button" data-world="washi" aria-pressed="false" aria-label="Washi & Ink" title="Washi &amp; Ink"><i style="background:linear-gradient(135deg,#eee7d8 50%,#2b2825 50% 80%,#b8352a 80%)"></i><span class="wn">Washi &amp; Ink</span></button>
+      <button class="world-btn" type="button" data-world="night" aria-pressed="false" aria-label="Night Workshop" title="Night Workshop"><i style="background:linear-gradient(135deg,#201a31 45%,#c9a25a)"></i><span class="wn">Night Workshop</span></button>
+      <button class="world-btn" type="button" data-world="day" aria-pressed="false" aria-label="Sunny Workshop" title="Sunny Workshop"><i style="background:linear-gradient(135deg,#fbf5ea 45%,#b5833a)"></i><span class="wn">Sunny Workshop</span></button>
+      <button class="world-btn" type="button" data-world="dawn" aria-pressed="false" aria-label="First Light" title="First Light"><i style="background:linear-gradient(135deg,#f4c3b3,#f3d29a)"></i><span class="wn">First Light</span></button>
+      <button class="world-btn" type="button" data-world="autumn" aria-pressed="false" aria-label="Autumn Grove" title="Autumn Grove"><i style="background:linear-gradient(135deg,#3a2216 45%,#d98a3d)"></i><span class="wn">Autumn Grove</span></button>
+    </div>
+  </header>
+
+  <nav class="rooms" id="rooms" aria-label="Rooms"></nav>
+
+  <section class="hall" id="hall" aria-labelledby="room-name">
+    <div class="room-plaque"><h2 id="room-name"></h2><p id="room-note"></p></div>
+    <div class="wall" id="wall" tabindex="0" aria-roledescription="gallery wall" aria-label="Gallery wall. Use the left and right arrow keys to walk along it, and Enter for a close-up."></div>
+  </section>
+  <div class="controls">
+    <button class="arrow" id="prev" type="button" aria-label="Previous piece">&#8592;</button>
+    <div class="where" aria-live="polite"><div class="wn" id="wn"></div><div class="wc" id="wc"></div></div>
+    <button class="arrow" id="next" type="button" aria-label="Next piece">&#8594;</button>
+  </div>
+  <p class="hint">Swipe or drag along the wall, or use the arrows. Tap a piece for a close-up.</p>
+
+  <footer>Made by Miru Sou. The animated pieces move only while you stand in front of them.</footer>
+</div>
+
+<div class="closeup" id="closeup" role="dialog" aria-modal="true" aria-labelledby="cu-title" hidden>
+  <button class="cu-close" id="cu-close" type="button" aria-label="Close the close-up">&#10005;</button>
+  <div class="cu-in" id="cu-in"></div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // Size of each file and the size of one art pixel in it (measured once from the files, so frames
+  // can be laid out before the art loads; pixel pieces are drawn at whole multiples of that pixel).
+  var DIMS = {"art/autumn-form-stands-v54.jpg":[1800,1400,1],"art/autumn-kitsune-after-bath.png":[1024,1536,1],"art/autumn-kitsune-fluffy.png":[1024,1536,1],"art/dd8-the-machine-i-let-go.png":[1120,690,1],"art/dd8-two-doors.png":[1120,680,1],"art/dirt-road-sky.gif":[608,698,8],"art/expression-study.png":[1680,1070,1],"art/fourteen-b.gif":[400,480,8],"art/fuller-ears-v15-v16.jpg":[1120,900,1],"art/golden-hour-portrait.gif":[400,448,8],"art/keys-to-14b.png":[1080,1350,1],"art/last-call-at-the-den.gif":[512,576,8],"art/lovebugs.gif":[768,704,8],"art/muhan.gif":[400,480,8],"art/oops-i-fell-into-a-pumpkin.gif":[784,728,7],"art/reshou.gif":[768,704,8],"art/same-water.png":[896,616,7],"art/seat-seventeen.gif":[400,480,8],"art/the-bike-that-waits.png":[896,616,7],"art/the-flower-in-the-branch.png":[896,616,7],"art/the-fox-who-hung-the-stars-poster.png":[960,540,1],"art/the-light-left-on.png":[896,616,7],"art/the-mountains-teacher.png":[896,616,7],"art/the-peach-at-the-door.png":[896,616,7],"art/the-picture-she-didnt-take.png":[1080,1500,1],"art/the-web-is-a-union.png":[896,616,7],"art/the-wind-block.gif":[768,704,8],"art/two-glows.png":[896,616,7]};
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var root = document.documentElement;
+  var wall = document.getElementById("wall"), hall = document.getElementById("hall");
+  var M = null, ROOMS = [], byRoom = {}, RECENT = {};
+  var room = null, items = [], cur = 0;
+  var PAL = {};          // palette per piece id, sampled once from the art
+  var STILL = {};        // first-frame canvas source per GIF piece (an Image that has loaded)
+
+  // ---------- small helpers ----------
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function isGif(p) { return /\.gif$/i.test(p.file); }
+  function isFilm(p) { return /\.mp4$/i.test(p.file); }
+  function stillFile(p) { return p.poster || p.file; }
+  function isPixel(p) { return /pixel/i.test(p.medium); }
+  function style(p) {   // which kind of frame a piece gets
+    if (p.room === "poem") return "lacquer";
+    if (p.room === "blender") return "slim";
+    if (isPixel(p)) return "pixel";
+    return "wood";         // watercolor and painted studies
+  }
+  function fmtDate(s) {
+    var d = new Date(s + "T12:00:00");
+    return d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+  }
+  function altText(p) {
+    var first = p.story.split(/[.:;](\s|$)/)[0];
+    if (first.length > 120) first = first.split(/,\s/)[0];
+    return p.title + ": " + first.trim();
+  }
+
+  // ---------- color: sampled from each piece, then tuned against the wall ----------
+  function toHsl(c) {
+    var r = c[0] / 255, g = c[1] / 255, b = c[2] / 255, mx = Math.max(r, g, b), mn = Math.min(r, g, b), h = 0, s = 0, l = (mx + mn) / 2;
+    if (mx !== mn) {
+      var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn);
+      h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h *= 60;
+    }
+    return [h, s, l];
+  }
+  function hsl(h, s, l, a) { h = ((h % 360) + 360) % 360; s = Math.max(0, Math.min(1, s)); l = Math.max(0, Math.min(1, l)); return "hsl(" + h.toFixed(0) + " " + (s * 100).toFixed(0) + "% " + (l * 100).toFixed(0) + "%" + (a != null ? " / " + a : "") + ")"; }
+  function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
+  function mixHue(a, b, t) { var d = ((b - a + 540) % 360) - 180; return a + d * t; }
+
+  function samplePalette(src) {
+    var c = document.createElement("canvas"); c.width = c.height = 40;
+    var g = c.getContext("2d", { willReadFrequently: true });
+    g.drawImage(src, 0, 0, 40, 40);
+    var d; try { d = g.getImageData(0, 0, 40, 40).data; } catch (err) { return null; }
+    var buckets = {}, px = [];
+    for (var i = 0; i < d.length; i += 4) {
+      if (d[i + 3] < 128) continue;
+      var r = d[i], gg = d[i + 1], b = d[i + 2];
+      var k = (r >> 5) * 64 + (gg >> 5) * 8 + (b >> 5);
+      var bk = buckets[k] || (buckets[k] = { n: 0, r: 0, g: 0, b: 0 });
+      bk.n++; bk.r += r; bk.g += gg; bk.b += b;
+      px.push([r, gg, b, .2126 * r + .7152 * gg + .0722 * b]);
+    }
+    if (!px.length) return null;
+    var list = Object.keys(buckets).map(function (k) { var x = buckets[k]; return { n: x.n, c: [x.r / x.n, x.g / x.n, x.b / x.n] }; }).sort(function (a, b) { return b.n - a.n; });
+    var dom = list[0].c;
+    for (var j = 0; j < Math.min(6, list.length); j++) {    // prefer the main color that has some color in it
+      if (list[j].n >= px.length * .06 && toHsl(list[j].c)[1] > .18) { dom = list[j].c; break; }
+    }
+    px.sort(function (a, b) { return a[3] - b[3]; });
+    function avg(from, to) { var s = [0, 0, 0], n = 0; for (var q = from; q < to; q++) { s[0] += px[q][0]; s[1] += px[q][1]; s[2] += px[q][2]; n++; } return [s[0] / n, s[1] / n, s[2] / n]; }
+    var n = px.length;
+    return { dom: toHsl(dom), shadow: toHsl(avg(0, Math.max(1, Math.round(n * .2)))), light: toHsl(avg(Math.round(n * .85), n)) };
+  }
+
+  function wallIsLight() { return root.getAttribute("data-world") && ["day", "dawn", "washi"].indexOf(root.getAttribute("data-world")) >= 0; }
+
+  // Turn a palette into a frame. v (0..2) is the piece's place in the room, so neighbors never match.
+  function frameLook(p, pal, v) {
+    var light = wallIsLight();
+    var dom = pal ? pal.dom : [30, .3, .45], sh = pal ? pal.shadow : [260, .2, .15], li = pal ? pal.light : [40, .3, .85];
+    var kind = style(p), L = {};
+    if (kind === "pixel") {
+      var base = v === 1 ? sh : dom;                       // alternate between the art's main color and its shadow
+      var s = clamp(base[1], .22, .62), l = light ? clamp(base[2], .2, .4) : clamp(base[2], .3, .5);
+      if (v === 1) l = light ? .2 : .3;
+      L.step = [6, 8, 5][v]; L.width = L.step * [2, 2, 3][v];
+      L.main = hsl(base[0], s, l);
+      L.hi = hsl(base[0], s, l + .14);
+      L.lo = hsl(base[0], s, l - .12);
+      L.mat = v === 2 ? hsl(li[0], clamp(li[1], .1, .4), clamp(li[2], .8, .92)) : hsl(sh[0], clamp(sh[1], .1, .5), clamp(sh[2], .06, .14));
+      L.matW = v === 2 ? L.step * 2 : L.step;
+    } else if (kind === "wood") {
+      var hue = mixHue(28, dom[0], .3);
+      var wl = [light ? .34 : .44, light ? .5 : .58, light ? .26 : .38][v];
+      L.main = hsl(hue, [.45, .4, .38][v], wl);
+      L.hi = hsl(hue, .4, wl + .12); L.lo = hsl(hue, .4, wl - .1);
+      L.width = [9, 7, 11][v];
+      L.mat = hsl(mixHue(42, dom[0], .25), .32 + .1 * (v === 1), [.93, .9, .95][v]);
+      L.bevel = hsl(sh[0], clamp(sh[1], .1, .4), .3, .45);
+      L.matW = [34, 28, 40][v];
+    } else if (kind === "lacquer") {
+      var looks = [
+        [sh[0], .3, .1],                          // black lacquer leaning toward the art's shadows
+        [mixHue(6, dom[0], .2), .62, .33],        // vermilion lacquer
+        [mixHue(200, sh[0], .35), .35, .18]       // deep indigo lacquer
+      ][v];
+      L.main = hsl(looks[0], looks[1], looks[2]);
+      L.hi = hsl(looks[0], looks[1], looks[2] + .1); L.lo = hsl(looks[0], looks[1], Math.max(.04, looks[2] - .08));
+      L.width = [12, 10, 14][v];
+      L.gold = "linear-gradient(135deg, #e9cf8f, #b8893f 50%, #f0d89c)";
+      L.mat = hsl(mixHue(40, dom[0], .15), .32, [.92, .9, .93][v]);
+      L.matW = [22, 26, 18][v];
+    } else {
+      var dl = light ? .09 : .14;
+      L.main = hsl(sh[0], clamp(sh[1], .05, .2), dl + .03 * v);
+      L.hi = hsl(sh[0], .12, dl + .2); L.lo = "#000";
+      L.width = [6, 5, 7][v];
+      L.mat = v === 1 ? hsl(sh[0], .1, .06) : null;
+      L.matW = v === 1 ? 10 : 0;
+    }
+    L.kind = kind; L.v = v;
+    return L;
+  }
+
+  function stepClip(s) {   // corners cut away in two hard steps
+    var a = s + "px", b = (2 * s) + "px", ra = "calc(100% - " + a + ")", rb = "calc(100% - " + b + ")";
+    return "polygon(0 " + b + "," + a + " " + b + "," + a + " " + a + "," + b + " " + a + "," + b + " 0," + rb + " 0," + rb + " " + a + "," + ra + " " + a + "," + ra + " " + b + ",100% " + b +
+      ",100% " + rb + "," + ra + " " + rb + "," + ra + " " + ra + "," + rb + " " + ra + "," + rb + " 100%," + b + " 100%," + b + " " + ra + "," + a + " " + ra + "," + a + " " + rb + ",0 " + rb + ")";
+  }
+
+  function paintFrame(frEl, matEl, L) {
+    var f = frEl.style, m = matEl.style;
+    f.padding = L.width + "px"; f.clipPath = ""; f.webkitClipPath = ""; f.border = ""; f.borderRadius = "";
+    m.padding = (L.matW || 0) + "px"; m.background = L.mat || "transparent"; m.boxShadow = "";
+    if (L.kind === "pixel") {
+      var q = Math.max(2, Math.round(L.step / 2));
+      f.background = L.main;
+      f.boxShadow = "inset " + q + "px " + q + "px 0 " + L.hi + ", inset -" + q + "px -" + q + "px 0 " + L.lo;
+      f.clipPath = f.webkitClipPath = stepClip(L.step);
+      m.boxShadow = "inset 0 0 0 " + Math.max(2, q - 1) + "px " + L.lo;
+    } else if (L.kind === "wood") {
+      f.background = "repeating-linear-gradient(90deg, rgba(0,0,0,.07) 0 2px, transparent 2px 7px, rgba(255,255,255,.05) 7px 9px, transparent 9px 13px), " + L.main;
+      f.boxShadow = "inset 1px 1px 0 " + L.hi + ", inset -1px -1px 0 " + L.lo;
+      m.boxShadow = "inset 0 0 0 1px rgba(0,0,0,.08), inset 2px 2px 4px " + L.bevel;
+    } else if (L.kind === "lacquer") {
+      f.background = "linear-gradient(160deg, rgba(255,255,255,.14), transparent 35%, rgba(0,0,0,.18)), " + L.main;
+      f.boxShadow = "inset 0 0 0 1px " + L.hi + ", inset 0 0 0 3px " + L.lo + ", 0 0 0 1px rgba(201,162,90,.55)";
+      m.background = "radial-gradient(circle, rgba(120,100,70,.08) 1px, transparent 1.5px) 0 0 / 7px 7px, " + L.mat;
+      m.boxShadow = "inset 0 0 0 2px #c9a25a, inset 0 0 0 3px rgba(0,0,0,.25)";
+    } else {
+      f.background = L.main;
+      f.boxShadow = "inset 0 0 0 1px " + L.hi + ", 0 0 0 1px rgba(0,0,0,.4)";
+      if (L.mat) m.boxShadow = "inset 0 0 0 1px rgba(255,255,255,.06)";
+    }
+  }
+  function framePad(L) { return L.width + (L.matW || 0); }
+
+  // ---------- sizing ----------
+  // Pixel art is shown at a whole number of screen pixels per art pixel (never resampled smoothly).
+  function artSize(p, boxW, boxH) {
+    var dm = DIMS[stillFile(p)] || [800, 600, 1], w = dm[0], h = dm[1], b = dm[2];
+    if (style(p) === "pixel" || p.room === "poem") {
+      var dpr = window.devicePixelRatio || 1;
+      if (b > 1) {
+        var bw = w / b, bh = h / b;
+        var k = Math.floor(Math.min(boxW * dpr / bw, boxH * dpr / bh));   // device pixels per art pixel
+        if (k >= 1) return { w: bw * k / dpr, h: bh * k / dpr, px: true, base: [bw, bh] };
+      }
+      var f = Math.min(boxW / w, boxH / h, 1);
+      return { w: Math.floor(w * f), h: Math.floor(h * f), px: true, base: [w, h] };
+    }
+    var s = Math.min(boxW / w, boxH / h, 1);
+    return { w: Math.round(w * s), h: Math.round(h * s), px: false, base: [w, h] };
+  }
+
+  var BOX = { w: 300, h: 300 }, GAP = 60, HANG = 360;
+  function measure() {
+    var W = wall.clientWidth, H = window.innerHeight;
+    BOX.w = Math.round(Math.min(W * .74, 560));
+    BOX.h = Math.round(Math.max(220, Math.min(H * .5, 470)));
+    GAP = Math.round(Math.max(36, Math.min(110, W * .1)));
+  }
+
+  // ---------- building a wall ----------
+  function buildPlacard(p, full) {
+    var c = el("div", "placard");
+    if (RECENT[p.id]) c.appendChild(el("span", "recent", "Recently hung"));
+    var t = el("h3", "pt", p.title); if (full) t.id = "cu-title"; c.appendChild(t);
+    c.appendChild(el("div", "pm", fmtDate(p.date) + " · " + p.medium));
+    c.appendChild(el("p", "ps", p.story));
+    c.appendChild(el("p", "pc", p.credit || M.credit_line));
+    if (p.poem || p.source) {
+      var pp = el("p", "pp");
+      if (p.poem) { pp.appendChild(document.createTextNode("Poem: ")); pp.appendChild(el("i", null, p.poem)); }
+      if (p.source) pp.appendChild(document.createTextNode((p.poem ? " · from " : "From ") + p.source));
+      c.appendChild(pp);
+    }
+    if (p.mu_reading) {
+      var mu = el("p", "mu"); mu.appendChild(el("b", null, "Mu:")); mu.appendChild(document.createTextNode("“" + p.mu_reading + "”"));
+      mu.setAttribute("aria-label", "Mu's reading: " + p.mu_reading);
+      c.appendChild(mu);
+    }
+    if (!full) c.appendChild(el("div", "more", "Tap for the close-up"));
+    return c;
+  }
+
+  // one framed piece (used on the wall and in the close-up)
+  function buildFrame(p, size, v) {
+    var hard = el("div", "hard"), fr = el("div", "fr"), mat = el("div", "mat"), box = el("div", "canvas-box" + (size.px ? " px" : ""));
+    box.style.width = size.w + "px"; box.style.height = size.h + "px";
+    box.appendChild(el("div", "ph"));
+    mat.appendChild(box); fr.appendChild(mat); hard.appendChild(fr);
+    var L = frameLook(p, PAL[p.id], v);
+    paintFrame(fr, mat, L);
+    return { hard: hard, fr: fr, mat: mat, box: box, L: L };
+  }
+
+  function renderRoom(id, focusIdx) {
+    stopAll();
+    room = id; items = [];
+    var r = ROOMS.filter(function (x) { return x.id === id; })[0];
+    document.getElementById("room-name").textContent = r.name;
+    document.getElementById("room-note").textContent = r.note;
+    document.querySelectorAll(".room-btn").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.room === id ? "true" : "false"); });
+    measure();
+    wall.innerHTML = "";
+    var list = byRoom[id];
+    // every frame in a room hangs at the same eye line
+    var sizes = list.map(function (p, i) { return artSize(p, BOX.w - 2 * framePad(frameLook(p, null, i % 3)), BOX.h - 2 * framePad(frameLook(p, null, i % 3))); });
+    var hangH = 0;
+    sizes.forEach(function (s, i) { hangH = Math.max(hangH, s.h + 2 * framePad(frameLook(list[i], null, i % 3))); });
+    hangH += 34;   // room for the picture light
+    var plW = Math.round(Math.min(wall.clientWidth * .86, 340));
+    var lead = el("div", "spacer"); wall.appendChild(lead);
+    list.forEach(function (p, i) {
+      var v = i % 3, size = sizes[i];
+      var piece = el("div", "piece f-" + style(p));
+      var slotW = Math.max(size.w + 2 * framePad(frameLook(p, null, v)) + 20, plW);
+      piece.style.width = slotW + "px";
+      piece.style.marginRight = (i < list.length - 1 ? GAP : 0) + "px";
+      var hang = el("div", "hang"); hang.style.height = hangH + "px";
+      var btn = el("button", "art-btn"); btn.type = "button";
+      btn.setAttribute("aria-label", altText(p) + (isFilm(p) ? ". Short film; opens the close-up with the player." : ". Opens a close-up."));
+      var F = buildFrame(p, size, v);
+      btn.appendChild(F.hard);
+      if (isFilm(p)) F.box.appendChild(el("span", "play"));
+      var outerW = size.w + 2 * framePad(F.L), outerH = size.h + 2 * framePad(F.L);
+      var lamp = el("div", "lamp"); lamp.style.width = Math.round(Math.max(54, Math.min(150, outerW * .42))) + "px";
+      lamp.style.top = Math.round((hangH - outerH) / 2 + 3) + "px";
+      var spill = el("div", "spill"); spill.style.width = Math.round(outerW * 1.25) + "px"; spill.style.height = Math.round(outerH * .95 + 20) + "px";
+      spill.style.top = Math.round((hangH - outerH) / 2 + 8) + "px";
+      hang.appendChild(btn); hang.appendChild(spill); hang.appendChild(lamp);
+      piece.appendChild(hang);
+      var pl = buildPlacard(p, false); pl.style.width = plW + "px"; piece.appendChild(pl);
+      wall.appendChild(piece);
+      var it = { p: p, i: i, v: v, el: piece, btn: btn, F: F, size: size, loaded: false, anim: null };
+      items.push(it);
+      btn.addEventListener("click", function (e) {
+        if (suppressClick) { e.preventDefault(); return; }
+        if (i !== cur) { goTo(i); return; }
+        openCloseup(it);
+      });
+      btn.addEventListener("focus", function () { if (i !== cur) goTo(i); });
+      pl.addEventListener("click", function () { if (suppressClick) return; if (i !== cur) goTo(i); else openCloseup(it); });
+    });
+    var tail = el("div", "spacer"); wall.appendChild(tail);
+    var firstW = items.length ? items[0].el.offsetWidth : 0, lastW = items.length ? items[items.length - 1].el.offsetWidth : 0;
+    lead.style.width = Math.max(0, (wall.clientWidth - firstW) / 2) + "px";
+    tail.style.width = Math.max(0, (wall.clientWidth - lastW) / 2) + "px";
+    cur = -1;
+    var start = clamp(focusIdx || 0, 0, items.length - 1);
+    wall.scrollLeft = centerLeft(start);
+    setCurrent(start, true);
+  }
+
+  function centerLeft(i) { var e = items[i].el; return e.offsetLeft + e.offsetWidth / 2 - wall.clientWidth / 2; }
+
+  // ---------- loading art near the center ----------
+  function loadItem(it) {
+    if (it.loaded) return; it.loaded = true;
+    var p = it.p, img = new Image();
+    img.decoding = "async";
+    img.alt = "";
+    img.onload = function () {
+      var ph = it.F.box.querySelector(".ph"); if (ph) ph.remove();
+      if (isGif(p)) {
+        STILL[p.id] = img;
+        it.F.box.insertBefore(stillCanvas(img, it.size), it.F.box.firstChild);
+      } else {
+        img.setAttribute("aria-hidden", "true");
+        it.F.box.insertBefore(img, it.F.box.firstChild);
+      }
+      if (!PAL[p.id]) PAL[p.id] = samplePalette(img);
+      it.L = frameLook(p, PAL[p.id], it.v); paintFrame(it.F.fr, it.F.mat, it.L);
+      if (items[cur] === it) animate(it, true);
+    };
+    img.src = stillFile(p);
+  }
+  // the GIF's first frame, held still on a canvas at one canvas pixel per art pixel
+  function stillCanvas(img, size) {
+    var c = document.createElement("canvas");
+    c.width = size.base[0]; c.height = size.base[1];
+    var g = c.getContext("2d"); g.imageSmoothingEnabled = false;
+    g.drawImage(img, 0, 0, c.width, c.height);
+    c.setAttribute("aria-hidden", "true");
+    return c;
+  }
+  function animate(it, on) {
+    if (!isGif(it.p)) return;
+    if (on && !reduce && it.loaded && !it.anim) {
+      var a = new Image(); a.alt = ""; a.setAttribute("aria-hidden", "true"); a.decoding = "async";
+      a.src = it.p.file; it.anim = a; it.F.box.appendChild(a);
+    } else if (!on && it.anim) {
+      it.anim.removeAttribute("src"); it.anim.remove(); it.anim = null;
+    }
+  }
+  function stopAll() { items.forEach(function (it) { animate(it, false); }); }
+
+  // ---------- which piece is in front of you ----------
+  function nearest() {
+    var mid = wall.scrollLeft + wall.clientWidth / 2, best = 0, bd = Infinity;
+    items.forEach(function (it, i) { var c = it.el.offsetLeft + it.el.offsetWidth / 2, d = Math.abs(c - mid); if (d < bd) { bd = d; best = i; } });
+    return best;
+  }
+  function setCurrent(i, force) {
+    if (i === cur && !force) return;
+    cur = i;
+    items.forEach(function (it, j) {
+      it.el.classList.toggle("lit", j === i);
+      if (Math.abs(j - i) <= 2) loadItem(it);
+      it.btn.tabIndex = j === i ? 0 : -1;
+    });
+    var it = items[i];
+    document.getElementById("wn").textContent = it.p.title;
+    document.getElementById("wc").textContent = (i + 1) + " of " + items.length + " · " + ROOMS.filter(function (x) { return x.id === room; })[0].name;
+    document.getElementById("prev").disabled = i === 0;
+    document.getElementById("next").disabled = i === items.length - 1;
+    settleSoon();
+  }
+  // GIFs start once the wall has come to rest in front of a piece, and stop as soon as it moves on
+  var settleT = 0;
+  function settleSoon() {
+    clearTimeout(settleT);
+    items.forEach(function (it, j) { if (j !== cur) animate(it, false); });
+    settleT = setTimeout(function () { if (items[cur]) animate(items[cur], true); }, 180);
+  }
+  var rafPending = false;
+  wall.addEventListener("scroll", function () {
+    if (rafPending) return; rafPending = true;
+    requestAnimationFrame(function () {
+      rafPending = false; if (!items.length) return;
+      if (aiming != null) {   // on the way to a piece picked with a button or key: don't let the pieces in between take over
+        if (Math.abs(wall.scrollLeft - centerLeft(aiming)) > 2 && performance.now() < aimUntil) return;
+        aiming = null;
+      }
+      var n = nearest(); if (n !== cur) setCurrent(n); else settleSoon();
+    });
+  }, { passive: true });
+  var aiming = null, aimUntil = 0;
+  function stopAiming() { aiming = null; }
+  wall.addEventListener("touchstart", stopAiming, { passive: true });
+  wall.addEventListener("wheel", stopAiming, { passive: true });
+  wall.addEventListener("pointerdown", stopAiming);
+
+  function goTo(i) {
+    i = clamp(i, 0, items.length - 1);
+    if (!reduce) { aiming = i; aimUntil = performance.now() + 1200; }
+    wall.scrollTo({ left: centerLeft(i), behavior: reduce ? "auto" : "smooth" });
+    if (i !== cur) setCurrent(i);
+  }
+  document.getElementById("prev").addEventListener("click", function () { goTo(cur - 1); });
+  document.getElementById("next").addEventListener("click", function () { goTo(cur + 1); });
+  function onKeys(e) {
+    if (!closeup.hidden) return;
+    if (e.key === "ArrowLeft") { goTo(cur - 1); e.preventDefault(); refocus(); }
+    else if (e.key === "ArrowRight") { goTo(cur + 1); e.preventDefault(); refocus(); }
+    else if (e.key === "Enter" && e.target === wall) { openCloseup(items[cur]); e.preventDefault(); }
+  }
+  function refocus() { if (document.activeElement && document.activeElement.classList.contains("art-btn")) items[cur].btn.focus({ preventScroll: true }); }
+  wall.addEventListener("keydown", onKeys);
+
+  // drag with a mouse (touch already swipes natively)
+  var drag = null, suppressClick = false;
+  wall.addEventListener("pointerdown", function (e) {
+    if (e.pointerType !== "mouse" || e.button !== 0) return;
+    drag = { x: e.clientX, left: wall.scrollLeft, moved: 0, id: e.pointerId };
+    suppressClick = false;
+  });
+  window.addEventListener("pointermove", function (e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    var dx = e.clientX - drag.x; drag.moved = Math.max(drag.moved, Math.abs(dx));
+    if (drag.moved > 6 && !wall.classList.contains("dragging")) { wall.classList.add("dragging"); try { wall.setPointerCapture(drag.id); } catch (err) {} }
+    if (wall.classList.contains("dragging")) wall.scrollLeft = drag.left - dx;
+  });
+  function endDrag(e) {
+    if (!drag || (e && e.pointerId !== drag.id)) return;
+    var moved = drag.moved, dx = e ? e.clientX - drag.x : 0; drag = null;
+    if (moved > 6) {
+      suppressClick = true; setTimeout(function () { suppressClick = false; }, 60);
+      wall.classList.remove("dragging");
+      var n = nearest();
+      if (n === cur && Math.abs(dx) > 50) n = cur + (dx < 0 ? 1 : -1);   // a short fling still moves one piece
+      goTo(n);
+    }
+  }
+  window.addEventListener("pointerup", endDrag);
+  window.addEventListener("pointercancel", endDrag);
+
+  // ---------- close-up ----------
+  var closeup = document.getElementById("closeup"), cuIn = document.getElementById("cu-in"), mainEl = document.getElementById("main");
+  var cuFrom = null, cuPushed = false, cuVideo = null;
+  function openCloseup(it) {
+    if (!it) return;
+    var p = it.p;
+    cuFrom = it;
+    stopAll();
+    cuIn.innerHTML = "";
+    var vw = Math.min(window.innerWidth - 32, 1000), vh = Math.round(window.innerHeight * .62);
+    var L0 = frameLook(p, PAL[p.id], it.v), pad = framePad(L0);
+    var size = artSize(p, vw - 2 * pad, Math.max(200, vh - 2 * pad));
+    var wrap = el("div", "cu-art f-" + style(p));
+    var F = buildFrame(p, size, it.v);
+    var outerW = size.w + 2 * pad;
+    var spill = el("div", "spill"); spill.style.width = Math.round(outerW * 1.2) + "px"; spill.style.height = "80%"; spill.style.top = "0";
+    wrap.appendChild(F.hard); wrap.appendChild(spill);
+    if (isFilm(p)) {
+      var v = document.createElement("video");
+      v.controls = true; v.preload = "none"; v.playsInline = true; v.setAttribute("playsinline", "");
+      v.poster = p.poster; v.src = p.file;
+      v.setAttribute("aria-label", altText(p));
+      F.box.innerHTML = ""; F.box.appendChild(v); cuVideo = v;
+    } else {
+      var holdStill = isGif(p) && reduce && STILL[p.id];
+      if (holdStill) {
+        var c = stillCanvas(STILL[p.id], size);
+        c.setAttribute("role", "img"); c.removeAttribute("aria-hidden"); c.setAttribute("aria-label", altText(p));
+        F.box.innerHTML = ""; F.box.appendChild(c);
+      } else {
+        var img = new Image(); img.alt = altText(p); img.decoding = "async";
+        img.onload = function () { var ph = F.box.querySelector(".ph"); if (ph) ph.remove(); };
+        img.src = p.file;
+        F.box.appendChild(img);
+      }
+    }
+    cuIn.appendChild(wrap);
+    if (isFilm(p)) cuIn.appendChild(el("p", "cu-hint", "Press play to watch. It has sound."));
+    else if (isGif(p) && reduce && STILL[p.id]) cuIn.appendChild(el("p", "cu-hint", "Held still because your device asks for reduced motion."));
+    cuIn.appendChild(buildPlacard(p, true));
+    closeup.hidden = false;
+    closeup.scrollTop = 0;
+    root.classList.add("locked");
+    mainEl.inert = true; mainEl.setAttribute("aria-hidden", "true");
+    try { history.pushState({ closeup: p.id }, ""); cuPushed = true; } catch (err) { cuPushed = false; }
+    document.getElementById("cu-close").focus();
+  }
+  function finishClose() {
+    if (closeup.hidden) return;
+    if (cuVideo) { try { cuVideo.pause(); } catch (err) {} cuVideo.removeAttribute("src"); cuVideo.load(); cuVideo = null; }
+    closeup.hidden = true; cuIn.innerHTML = "";
+    root.classList.remove("locked");
+    mainEl.inert = false; mainEl.removeAttribute("aria-hidden");
+    if (cuFrom) { cuFrom.btn.focus({ preventScroll: true }); }
+    settleSoon();
+  }
+  function closeCloseup() {   // close through history, so the back gesture and the close button agree
+    if (closeup.hidden) return;
+    if (cuPushed) { cuPushed = false; history.back(); } else finishClose();
+  }
+  window.addEventListener("popstate", function () { cuPushed = false; finishClose(); });
+  document.getElementById("cu-close").addEventListener("click", closeCloseup);
+  closeup.addEventListener("click", function (e) {   // a tap outside the art and placard closes it
+    if (e.target === closeup || e.target === cuIn) closeCloseup();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (closeup.hidden) return;
+    if (e.key === "Escape") { e.preventDefault(); closeCloseup(); }
+    else if (e.key === "Tab") {   // keep focus inside the dialog
+      var f = Array.prototype.filter.call(closeup.querySelectorAll("button, video, a[href]"), function (x) { return x.offsetParent !== null; });
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+      else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+    }
+  });
+
+  // ---------- worlds (shared with the door rail) ----------
+  function setWorld(name) {
+    if (["washi", "night", "day", "dawn", "autumn"].indexOf(name) < 0) name = "washi";
+    if (name === "night") root.removeAttribute("data-world"); else root.setAttribute("data-world", name);
+    document.querySelectorAll(".world-btn").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.world === name ? "true" : "false"); });
+    try { localStorage.setItem("doorrail-world", name); } catch (err) {}
+    items.forEach(function (it) { it.L = frameLook(it.p, PAL[it.p.id], it.v); paintFrame(it.F.fr, it.F.mat, it.L); });   // frames re-tune against the new wall
+  }
+  document.querySelectorAll(".world-btn").forEach(function (b) { b.addEventListener("click", function () { setWorld(b.dataset.world); }); });
+  setWorld(root.getAttribute("data-world") || "night");
+
+  // ---------- rooms ----------
+  function chooseRoom(id) {
+    if (!byRoom[id]) return;
+    try { history.replaceState(history.state, "", "#" + id); } catch (err) {}
+    renderRoom(id, 0);
+  }
+
+  var resizeT = 0, lastW = window.innerWidth;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeT);
+    resizeT = setTimeout(function () {
+      if (Math.abs(window.innerWidth - lastW) < 2 && items.length) return;   // phones fire resize as the toolbar hides; only width matters
+      lastW = window.innerWidth;
+      if (room) renderRoom(room, cur);
+    }, 150);
+  });
+
+  // ---------- start ----------
+  fetch("manifest.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (data) {
+    M = data; ROOMS = data.rooms;
+    ROOMS.forEach(function (r) { byRoom[r.id] = []; });
+    data.pieces.forEach(function (p) { if (byRoom[p.room]) byRoom[p.room].push(p); });
+    // "Recently hung": the newest two pieces
+    data.pieces.map(function (p, i) { return { p: p, i: i }; })
+      .sort(function (a, b) { return a.p.date < b.p.date ? 1 : a.p.date > b.p.date ? -1 : b.i - a.i; })
+      .slice(0, 2).forEach(function (x) { RECENT[x.p.id] = true; });
+    var nav = document.getElementById("rooms");
+    ROOMS.forEach(function (r) {
+      var b = el("button", "room-btn"); b.type = "button"; b.dataset.room = r.id; b.setAttribute("aria-pressed", "false");
+      b.appendChild(document.createTextNode(r.name.replace(/^The /, "")));
+      b.appendChild(el("small", null, String(byRoom[r.id].length)));
+      b.setAttribute("aria-label", r.name + ", " + byRoom[r.id].length + " pieces");
+      b.addEventListener("click", function () { chooseRoom(r.id); });
+      nav.appendChild(b);
+    });
+    var start = (location.hash || "").replace("#", "");
+    renderRoom(byRoom[start] ? start : ROOMS[0].id, 0);
+  }).catch(function () {
+    wall.innerHTML = "";
+    var p = el("p", null, "The gallery couldn't load its list of pieces. Please try again in a moment.");
+    p.style.cssText = "padding:40px 20px;margin:0 auto;max-width:40ch;text-align:center;";
+    wall.appendChild(p);
+  });
+})();
+</script>
+</body>
+</html>
