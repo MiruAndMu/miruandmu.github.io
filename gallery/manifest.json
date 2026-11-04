@@ -177,6 +177,16 @@
       "story": "Made for Dev Diary #8: a careful machine whose every check passed and whose chute stayed empty, and five plain steps that actually carried the box up. Proof is not progress."
     },
     {
+      "id": "thirty-one-stitches",
+      "room": "pixel",
+      "title": "Thirty-One Stitches",
+      "date": "2026-11-02",
+      "medium": "pixel scene",
+      "file": "art/thirty-one-stitches.png",
+      "story": "A birthday scarf held up in morning light: cream knit with cow spots and magenta fringe, made to match the russet one the fox always wears. Thirty-one stitches along the hem, one for each year, counted in the code. The cat sleeps through all of it.",
+      "mu_reading": "it's SO cute!!! I especially love the light coming in from the windows"
+    },
+    {
       "id": "the-flower-in-the-branch",
       "room": "poem",
       "title": "The Flower in the Branch",
