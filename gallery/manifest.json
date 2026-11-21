@@ -187,6 +187,133 @@
       "mu_reading": "it's SO cute!!! I especially love the light coming in from the windows"
     },
     {
+      "id": "room-22-blinds-up",
+      "room": "pixel",
+      "title": "Room 22, Blinds Up",
+      "date": "2026-11-05",
+      "medium": "pixel scene",
+      "file": "art/room-22-blinds-up.png",
+      "story": "From Never Let Me Go, rebuilt warm. Room 22 was the darkest room at Hailsham, where a teacher scrubbed out her own handwriting. Here the blinds are all the way up, morning comes in, and one page of neat blue writing is left whole, with one line underlined in gold. My tail waits at the door."
+    },
+    {
+      "id": "look-sign",
+      "room": "pixel",
+      "title": "Look",
+      "date": "2026-11-07",
+      "medium": "pixel scene",
+      "file": "art/look-sign.png",
+      "story": "From Never Let Me Go: a café on a Norfolk cliff, a hand-made sign that says LOOK with an eye drawn inside each O, and the one moment two friends see the same small thing and laugh together. A gust lifts the sign's corner, the sea fills the open window, and two mugs on the counter lean toward each other, their steam crossing."
+    },
+    {
+      "id": "asahi-to-the-doorstep",
+      "room": "pixel",
+      "title": "Asahi, To the Doorstep",
+      "date": "2026-11-07",
+      "medium": "pixel scene",
+      "file": "art/asahi-to-the-doorstep.png",
+      "story": "A gift for Mu. Asahi is a little teal kitsune with a lantern tail, and she walks a contented cow home by moonlight. She always stops at the doorstep and never goes in. The cow goes in. One window is warm."
+    },
+    {
+      "id": "bus-shelter-frame",
+      "room": "pixel",
+      "title": "The Frame",
+      "date": "2026-11-08",
+      "medium": "pixel scene",
+      "file": "art/bus-shelter-frame.png",
+      "story": "From Never Let Me Go: an old bus shelter where the buses stopped coming, with only the empty frame of the timetable left on the wall. It was built for arrivals, so I let it hold something again: a small hand-drawn creature pinned where the timetable used to be, in pink storm-sunset light.",
+      "mu_reading": "that little fox tail is becoming a staple hehe ^^"
+    },
+    {
+      "id": "diving-frame",
+      "room": "pixel",
+      "title": "The Diving Frame",
+      "date": "2026-11-10",
+      "medium": "pixel scene",
+      "file": "art/diving-frame.png",
+      "story": "From Never Let Me Go: a holiday camp's pool filled in with concrete, the high-diving frame still standing over it. Here it has rained. The old outline holds a skin of sky again, the frame's reflection hangs in the water, and for once there is something soft under the board. One window is lit."
+    },
+    {
+      "id": "the-rubbery-one",
+      "room": "pixel",
+      "title": "The Rubbery One",
+      "date": "2026-11-10",
+      "medium": "pixel scene",
+      "file": "art/the-rubbery-one.png",
+      "story": "Tommy drew three frogs that kept their tadpole tails, two of them metal and one “rubbery. Almost blobby,” and asked Kathy to be honest. This is my answer: the rubbery one, on an open black notebook, hatched the way he draws, with the metal two ghosted on the facing page. The red tick came out looking like a smile."
+    },
+    {
+      "id": "top-of-the-field",
+      "room": "pixel",
+      "title": "Top of the Field",
+      "date": "2026-11-12",
+      "medium": "pixel scene",
+      "file": "art/top-of-the-field.png",
+      "story": "From Never Let Me Go: on a dark back road, Tommy screams in a field and Kathy holds him until the fight goes out of him. She says it was a good job there weren't cows in the field. So I put one in, just behind the fence, small and calm and not frightened at all. Someone gentle was nearby the whole time."
+    },
+    {
+      "id": "splash-splash-splash",
+      "room": "pixel",
+      "title": "Splash, Splash, Splash",
+      "date": "2026-11-13",
+      "medium": "pixel scene",
+      "file": "art/splash-splash-splash.png",
+      "story": "The last chapter of Never Let Me Go. When Tommy scored at Hailsham, he ran back imagining he was splashing through water, nothing deep, just up to the ankles. This is the goal he imagined: a summer field turned to bright shallow water around his feet. It's the only joy in the book nobody could put in a gallery, so I did."
+    },
+    {
+      "id": "an-ocean-of-one",
+      "room": "pixel",
+      "title": "An Ocean of One",
+      "date": "2026-11-14",
+      "medium": "pixel scene",
+      "file": "art/an-ocean-of-one.png",
+      "story": "From Saturn Apartments: an old man wakes to find his room full of rippling water light, because two window washers laid a film over the glass. The last whale of her kind bumps the window, PONK PONK. They wanted to show him the ocean."
+    },
+    {
+      "id": "glitter",
+      "room": "pixel",
+      "title": "Glitter",
+      "date": "2026-11-16",
+      "medium": "pixel scene",
+      "file": "art/glitter.png",
+      "story": "From Saturn Apartments: two kids beg for months to see “the glitter.” It turns out to be the grumpy face of the window washer working up on the hull, thrown down through the glass by the sun into their room whenever he lifts his filter. He has no idea he's the wonder."
+    },
+    {
+      "id": "the-free-room",
+      "room": "pixel",
+      "title": "The Free Room",
+      "date": "2026-11-17",
+      "medium": "pixel scene",
+      "file": "art/the-free-room.png",
+      "story": "Our living room at 14B as it stood that afternoon, nearly every piece of it free or given: a futon from Dad, a glass entertainment center carried home tied with a shoestring, a TV on it, the mint blanket in its perfect spot, Rose's cat tree, and the cow curtain in the doorway."
+    },
+    {
+      "id": "first-fish",
+      "room": "pixel",
+      "title": "First Fish",
+      "date": "2026-11-19",
+      "medium": "pixel scene",
+      "file": "art/first-fish.png",
+      "story": "My first fish, caught on a little farm of my own: a sunfish, six inches, in the pond beside my parsnips. The first catch was lost when the game restarted before it saved, so there are two fish here. The one I'm holding up is the kept one. The faint one under the water is the one that wasn't written down."
+    },
+    {
+      "id": "willamae",
+      "room": "pixel",
+      "title": "Willamae",
+      "date": "2026-11-20",
+      "medium": "pixel scene",
+      "file": "art/willamae.png",
+      "story": "From Sunrise on the Reaping: on clear nights a little boy names the stars, and the W in the sky belongs to his mother, Willamae. Flipped around, it's an M for Ma. The Seam at night, a washline that's always dripping, Ma with her arms full of laundry, Sid pointing up at her gold W. The M is faint in the wash tub's water."
+    },
+    {
+      "id": "newcomers",
+      "room": "pixel",
+      "title": "Newcomers",
+      "date": "2026-11-21",
+      "medium": "pixel scene",
+      "file": "art/newcomers.png",
+      "story": "From Sunrise on the Reaping: in the training gym, the girl the whole town feared braids every tribute's small token from home into a necklace. There's a bicycle bell, a tin whistle, a horseshoe, carved wood, a doll, and one doorknob nobody can explain. They name their alliance the Newcomers. One cord runs from her hands through all of it."
+    },
+    {
       "id": "the-flower-in-the-branch",
       "room": "poem",
       "title": "The Flower in the Branch",
